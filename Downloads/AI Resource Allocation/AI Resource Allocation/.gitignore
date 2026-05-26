@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+venv/
+.venv/
+
+# Build outputs
+dist/
+build/
+.next/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Environment files (contains API keys / secrets)
+.env
+.env.local
+.env.production
+
+# Logs
+*.log
+backend-dev.log
+backend-dev.err.log
+frontend-dev.log
+frontend-dev.err.log
+ml-dev.log
+ml-dev.err.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+*.tsbuildinfo
+
+# Prisma generated engine binaries (large, platform-specific)
+node_modules/.prisma/
+
+# Temp
+*.tmp
+*.temp

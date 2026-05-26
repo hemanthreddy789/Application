@@ -1,0 +1,399 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  role         String // Admin, Manager, Employee
+  passwordHash String?
+  mockAuth     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  employee     Employee?
+}
+
+model Employee {
+  id                     String    @id @default(uuid())
+  userId                 String?   @unique
+  employeeCode           String    @unique
+  name                   String
+  email                  String    @unique
+  role                   String
+  department             String
+  experienceLevel        String // Junior, Mid, Senior, Expert
+  weeklyCapacityHours    Int
+  currentAllocatedHours  Int       @default(0)
+  performanceScore       Float     @default(0) // 0-100
+  qualityRating          Float     @default(0) // 0-5
+  onTimeDeliveryRate     Float     @default(0) // 0-100
+  averageCompletionSpeed Float     @default(1.0)
+  isActive               Boolean   @default(true)
+  managerOverrideAccuracy Float?
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+
+  user                   User?     @relation(fields: [userId], references: [id])
+  skills                 EmployeeSkill[]
+  skillProgressions      SkillProgression[]
+  assignedTasks          Task[]
+  leaves                 Leave[]
+  workloadSnapshots      WorkloadSnapshot[]
+  feedbackAsManager      FeedbackEvent[]  @relation("ManagerFeedback")
+  feedbackAsRecommended  FeedbackEvent[]  @relation("RecommendedEmployee")
+  feedbackAsChosen       FeedbackEvent[]  @relation("ActualEmployee")
+  overridePatternsAsRec  OverridePattern[] @relation("RecommendedOverride")
+  overridePatternsAsChosen OverridePattern[] @relation("ChosenOverride")
+  overridePatternsAsManager OverridePattern[] @relation("ManagerOverride")
+  notifications          Notification[]
+  notificationPrefs      NotificationPreference?
+  workloadForecasts      WorkloadForecast[]
+  taskAssignments        TaskAssignment[]
+}
+
+model Skill {
+  id             String          @id @default(uuid())
+  name           String          @unique
+  category       String
+  description    String?
+  employeeSkills EmployeeSkill[]
+  taskSkills     TaskRequiredSkill[]
+  skillProgressions SkillProgression[]
+}
+
+model EmployeeSkill {
+  id                String   @id @default(uuid())
+  employeeId        String
+  skillId           String
+  proficiencyLevel  Int      // 1-5
+  yearsOfExperience Float
+  isCertified       Boolean  @default(false)
+
+  employee          Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  skill             Skill    @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@unique([employeeId, skillId])
+}
+
+model SkillProgression {
+  id               String   @id @default(uuid())
+  employeeId       String
+  skillId          String
+  proficiencyLevel Int      // 1-5
+  date             DateTime @default(now())
+
+  employee         Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  skill            Skill    @relation(fields: [skillId], references: [id], onDelete: Cascade)
+}
+
+model Project {
+  id             String   @id @default(uuid())
+  name           String
+  description    String?
+  status         String   // Active, Completed, AtRisk
+  priority       String   // Low, Medium, High
+  startDate      DateTime
+  endDate        DateTime?
+  managerId      String?
+  delayRiskScore Float    @default(0) // 0-100
+  budget         Float    @default(0)
+  currentCost    Float    @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  tasks          Task[]
+}
+
+model Task {
+  id                 String   @id @default(uuid())
+  projectId          String
+  title              String
+  description        String?
+  taskType           String
+  complexity         String   // Low, Medium, High, Critical
+  priority           String   // Low, Medium, High, Urgent
+  estimatedHours     Int
+  deadline           DateTime
+  assignedEmployeeId String?
+  status             String   // Not Started, In Progress, Blocked, Completed, Delayed
+  progressPercentage Int      @default(0)
+  dependencyIds      String   // JSON string of task IDs
+  parsedByAi         Boolean  @default(false)
+  aiParseConfidence  Float?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  project            Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  assignedEmployee   Employee? @relation(fields: [assignedEmployeeId], references: [id])
+  requiredSkills     TaskRequiredSkill[]
+  timeLogs           TimeLog[]
+  recommendations    Recommendation[]
+  feedbackEvents     FeedbackEvent[]
+  delayPredictions   DelayPrediction[]
+  dependenciesAsTask TaskDependency[] @relation("TaskDependencies")
+  dependenciesAsDep  TaskDependency[] @relation("DependsOnTask")
+  taskAssignments    TaskAssignment[]
+}
+
+model TaskRequiredSkill {
+  id              String   @id @default(uuid())
+  taskId          String
+  skillId         String
+  importanceLevel String   // NiceToHave, Required, Critical
+
+  task            Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  skill           Skill    @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@unique([taskId, skillId])
+}
+
+model TimeLog {
+  id          String   @id @default(uuid())
+  taskId      String
+  employeeId  String
+  hoursLogged Float
+  logDate     DateTime
+  notes       String?
+
+  task        Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+}
+
+model Leave {
+  id         String   @id @default(uuid())
+  employeeId String
+  startDate  DateTime
+  endDate    DateTime
+  leaveType  String   // Vacation, Sick, Personal
+  status     String   // Approved, Pending
+
+  employee   Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+}
+
+model Holiday {
+  id     String   @id @default(uuid())
+  name   String
+  date   DateTime
+  region String?
+}
+
+model Recommendation {
+  id                         String   @id @default(uuid())
+  taskId                     String
+  employeeId                 String
+  skillMatchScore            Float
+  availabilityScore          Float
+  performanceScore           Float
+  deadlineCompatibilityScore Float
+  finalScore                 Float
+  confidenceScore            Float
+  explanation                String
+  riskNotes                  String?
+  modelVersion               Int?
+  featureVector              String?  // JSON string
+  createdAt                  DateTime @default(now())
+
+  task                       Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+}
+
+model WorkloadSnapshot {
+  id                   String   @id @default(uuid())
+  employeeId           String
+  weekStartDate        DateTime
+  allocatedHours       Int
+  capacityHours        Int
+  utilizationPercentage Float
+  status               String   // Available, Balanced, Moderate, Overloaded
+
+  employee             Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+}
+
+model BalancingSuggestion {
+  id                 String   @id @default(uuid())
+  fromEmployeeId     String
+  toEmployeeId       String
+  taskId             String
+  reason             String
+  impactSummary      String
+  riskReductionScore Float
+  status             String   // Pending, Applied, Dismissed
+  createdAt          DateTime @default(now())
+}
+
+model ChatMessage {
+  id        String   @id @default(uuid())
+  userId    String
+  question  String
+  answer    String
+  intent    String
+  createdAt DateTime @default(now())
+}
+
+model ScoringConfig {
+  id                          String   @id @default(uuid())
+  skillMatchWeight            Float    @default(0.4)
+  availabilityWeight          Float    @default(0.3)
+  performanceWeight           Float    @default(0.2)
+  deadlineCompatibilityWeight Float    @default(0.1)
+  updatedBy                   String
+  updatedAt                   DateTime @updatedAt
+}
+
+// V2 ENHANCEMENTS
+
+model MlModel {
+  id                   String   @id @default(uuid())
+  version              Int      @unique
+  trainedAt            DateTime
+  trainingSampleSize   Int
+  featureImportances   String   // JSON string
+  validationRmse       Float
+  isActive             Boolean  @default(false)
+  fallbackUsed         Boolean  @default(false)
+  createdAt            DateTime @default(now())
+}
+
+model MlPrediction {
+  id                   String   @id @default(uuid())
+  taskId               String
+  employeeId           String
+  modelVersion         Int
+  featureVector        String   // JSON string
+  rawPrediction        Float
+  finalScore           Float
+  confidence           Float
+  usedFallback         Boolean
+  createdAt            DateTime @default(now())
+}
+
+model TaskDependency {
+  id               String   @id @default(uuid())
+  taskId           String
+  dependsOnTaskId  String
+  dependencyType   String   // finish_to_start, start_to_start, finish_to_finish
+  createdAt        DateTime @default(now())
+
+  task             Task     @relation("TaskDependencies", fields: [taskId], references: [id], onDelete: Cascade)
+  dependsOnTask    Task     @relation("DependsOnTask", fields: [dependsOnTaskId], references: [id], onDelete: Cascade)
+}
+
+model DelayPrediction {
+  id                   String   @id @default(uuid())
+  taskId               String
+  projectId            String
+  predictedAt          DateTime @default(now())
+  delayProbability     Float
+  riskLevel            String   // low, medium, high
+  topRiskFactors       String   // JSON string
+  recommendedActions   String   // JSON string
+  modelVersion         Int
+  actualDelayed        Boolean?
+  actualDelayDays      Int?
+  createdAt            DateTime @default(now())
+
+  task                 Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+}
+
+model WorkloadForecast {
+  id                   String   @id @default(uuid())
+  employeeId           String
+  forecastDate         DateTime
+  predictedCapacity    Float
+  confidenceLower      Float
+  confidenceUpper      Float
+  generatedAt          DateTime @default(now())
+  modelVersion         Int
+
+  employee             Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+}
+
+model FeedbackEvent {
+  id                     String   @id @default(uuid())
+  eventType              String   // accepted, overridden, completed, reassigned
+  taskId                 String
+  recommendedEmployeeId  String
+  actualEmployeeId       String
+  overrideReason         String?
+  outcomeQuality         Float?
+  outcomeOnTime          Boolean?
+  wasPredictionCorrect   Boolean?
+  managerId              String?
+  createdAt              DateTime @default(now())
+
+  task                   Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  manager                Employee? @relation("ManagerFeedback", fields: [managerId], references: [id])
+  recommendedEmployee    Employee @relation("RecommendedEmployee", fields: [recommendedEmployeeId], references: [id])
+  actualEmployee         Employee @relation("ActualEmployee", fields: [actualEmployeeId], references: [id])
+}
+
+model OverridePattern {
+  id                     String   @id @default(uuid())
+  managerId              String
+  taskType               String
+  overrideReason         String
+  recommendedEmployeeId  String
+  chosenEmployeeId       String
+  outcomeWasBetter       Boolean
+  count                  Int      @default(1)
+  lastOccurred           DateTime @default(now())
+
+  manager                Employee @relation("ManagerOverride", fields: [managerId], references: [id], onDelete: Cascade)
+  recommendedEmployee    Employee @relation("RecommendedOverride", fields: [recommendedEmployeeId], references: [id], onDelete: Cascade)
+  chosenEmployee         Employee @relation("ChosenOverride", fields: [chosenEmployeeId], references: [id], onDelete: Cascade)
+}
+
+model TaskAssignment {
+  id                   String   @id @default(uuid())
+  taskId               String
+  employeeId           String
+  allocatedHoursPerDay Float    @default(0)
+  totalAllocatedHours  Float    @default(0)
+  assignedAt           DateTime @default(now())
+
+  task                 Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  employee             Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@unique([taskId, employeeId])
+}
+
+model AnalyticsCache {
+  id           String   @id @default(uuid())
+  metricKey    String   @unique
+  metricValue  String   // JSON string
+  computedAt   DateTime @default(now())
+  validUntil   DateTime
+}
+
+model Notification {
+  id           String   @id @default(uuid())
+  recipientId  String
+  alertType    String
+  title        String
+  message      String
+  actionUrl    String?
+  actionLabel  String?
+  isRead       Boolean  @default(false)
+  priority     String   // low, medium, high, critical
+  createdAt    DateTime @default(now())
+  readAt       DateTime?
+
+  recipient    Employee @relation(fields: [recipientId], references: [id], onDelete: Cascade)
+}
+
+model NotificationPreference {
+  id           String   @id @default(uuid())
+  employeeId   String   @unique
+  alertType    String   // could be an array stored as JSON if needed, or row per alert
+  inApp        Boolean  @default(true)
+  email        Boolean  @default(true)
+  slack        Boolean  @default(false)
+  updatedAt    DateTime @updatedAt
+
+  employee     Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+}
+

@@ -1,0 +1,507 @@
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Tenant {
+  id        String    @id @default(uuid()) @db.Uuid
+  name      String
+  code      String    @unique
+  domain    String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  users            User[]
+  employees        Employee[]
+  projects         Project[]
+  tasks            Task[]
+  leaves           Leave[]
+  feedbackEvents   FeedbackEvent[]
+  scoringConfigs   ScoringConfig[]
+  overridePatterns OverridePattern[]
+
+  @@index([code])
+}
+
+model User {
+  id           String    @id @default(uuid()) @db.Uuid
+  tenantId     String    @db.Uuid
+  name         String
+  email        String    @unique
+  role         String    // super_admin, tenant_admin, manager, employee, viewer
+  passwordHash String?
+  mockAuth     Boolean   @default(true)
+  mfaEnabled   Boolean   @default(false)
+  lastLoginAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  createdBy    String?   @db.Uuid
+  updatedBy    String?   @db.Uuid
+  deletedAt    DateTime?
+
+  tenant       Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  employee     Employee?
+
+  @@index([tenantId])
+  @@index([email])
+}
+
+model Employee {
+  id                     String    @id @default(uuid()) @db.Uuid
+  tenantId               String    @db.Uuid
+  userId                 String?   @unique @db.Uuid
+  managerId              String?   @db.Uuid
+  employeeCode           String    @unique
+  name                   String
+  email                  String    @unique
+  employmentType         String    @default("FTE") // FTE, Contractor, Intern, PartTime
+  role                   String
+  department             String
+  seniority              String    @default("Mid") // Intern, Junior, Mid, Senior, Staff, Principal, Manager, Director
+  experienceLevel        String    // Junior, Mid, Senior, Expert
+  officeLocation         String    @default("Remote")
+  timezone               String    @default("UTC")
+  weeklyCapacityHours    Int
+  currentAllocatedHours  Int       @default(0)
+  costRateUsdHourly      Float     @default(50.0)
+  performanceScore       Float     @default(0) // 0-100
+  qualityRating          Float     @default(0) // 0-5
+  onTimeDeliveryRate     Float     @default(0) // 0-100
+  averageCompletionSpeed Float     @default(1.0)
+  isActive               Boolean   @default(true)
+  status                 String    @default("Active") // Active, Probation, PIP, ParentalLeave, Sabbatical, NoticeGiven, Terminated
+  hireDate               DateTime  @default(now())
+  managerOverrideAccuracy Float?
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+  createdBy              String?   @db.Uuid
+  updatedBy              String?   @db.Uuid
+  deletedAt              DateTime?
+
+  tenant                 Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  user                   User?     @relation(fields: [userId], references: [id])
+  manager                Employee? @relation("EmployeeManager", fields: [managerId], references: [id])
+  directReports          Employee[] @relation("EmployeeManager")
+  skills                 EmployeeSkill[]
+  assignedTasks          Task[]
+  leaves                 Leave[]
+  workloadSnapshots      WorkloadSnapshot[]
+  feedbackAsManager      FeedbackEvent[]  @relation("ManagerFeedback")
+  feedbackAsRecommended  FeedbackEvent[]  @relation("RecommendedEmployee")
+  feedbackAsChosen       FeedbackEvent[]  @relation("ActualEmployee")
+  overridePatternsAsRec  OverridePattern[] @relation("RecommendedOverride")
+  overridePatternsAsChosen OverridePattern[] @relation("ChosenOverride")
+  overridePatternsAsManager OverridePattern[] @relation("ManagerOverride")
+  notifications          Notification[]
+  notificationPrefs      NotificationPreference?
+  workloadForecasts      WorkloadForecast[]
+
+  @@index([tenantId])
+  @@index([managerId])
+  @@index([email])
+}
+
+model Skill {
+  id             String          @id @default(uuid()) @db.Uuid
+  name           String          @unique
+  category       String
+  description    String?
+  employeeSkills EmployeeSkill[]
+  taskSkills     TaskRequiredSkill[]
+
+  @@index([category])
+}
+
+model EmployeeSkill {
+  id                String   @id @default(uuid()) @db.Uuid
+  employeeId        String   @db.Uuid
+  skillId           String   @db.Uuid
+  proficiencyLevel  Int      // 1-5
+  yearsOfExperience Float
+  isCertified       Boolean  @default(false)
+  lastUsedDate      DateTime @default(now())
+
+  employee          Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  skill             Skill    @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@unique([employeeId, skillId])
+  @@index([employeeId])
+  @@index([skillId])
+}
+
+model Project {
+  id             String    @id @default(uuid()) @db.Uuid
+  tenantId       String    @db.Uuid
+  name           String
+  description    String?
+  archetypeCode  String?
+  status         String    // Active, Completed, AtRisk
+  priority       String    // Low, Medium, High
+  startDate      DateTime
+  endDate        DateTime?
+  managerId      String?   @db.Uuid
+  delayRiskScore Float     @default(0) // 0-100
+  budgetUsd      Float?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  createdBy      String?   @db.Uuid
+  updatedBy      String?   @db.Uuid
+  deletedAt      DateTime?
+
+  tenant         Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  tasks          Task[]
+
+  @@index([tenantId])
+  @@index([managerId])
+}
+
+model Task {
+  id                 String    @id @default(uuid()) @db.Uuid
+  tenantId           String    @db.Uuid
+  projectId          String    @db.Uuid
+  title              String
+  description        String?
+  taskType           String
+  domain             String    @default("general")
+  complexity         String    // Low, Medium, High, Critical
+  priority           String    // Low, Medium, High, Urgent
+  estimatedHours     Int
+  actualHours        Int?
+  deadline           DateTime
+  assignedEmployeeId String?   @db.Uuid
+  status             String    // Not Started, In Progress, Blocked, Completed, Delayed
+  progressPercentage Int       @default(0)
+  dependencyIds      String    // JSON string
+  parsedByAi         Boolean   @default(false)
+  aiParseConfidence  Float?
+  aiRecommendedEmpId String?   @db.Uuid
+  wasOverride        Boolean   @default(false)
+  overrideReason     String?
+  completionQualityScore Float? // 1-5
+  onTimeDelivered    Boolean?
+  daysLate           Int?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  createdBy          String?   @db.Uuid
+  updatedBy          String?   @db.Uuid
+  deletedAt          DateTime?
+
+  tenant             Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  project            Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  assignedEmployee   Employee? @relation(fields: [assignedEmployeeId], references: [id])
+  requiredSkills     TaskRequiredSkill[]
+  timeLogs           TimeLog[]
+  recommendations    Recommendation[]
+  feedbackEvents     FeedbackEvent[]
+  delayPredictions   DelayPrediction[]
+  dependenciesAsTask TaskDependency[] @relation("TaskDependencies")
+  dependenciesAsDep  TaskDependency[] @relation("DependsOnTask")
+
+  @@index([tenantId])
+  @@index([projectId])
+  @@index([assignedEmployeeId])
+}
+
+model TaskRequiredSkill {
+  id              String   @id @default(uuid()) @db.Uuid
+  taskId          String   @db.Uuid
+  skillId         String   @db.Uuid
+  importanceLevel String   // NiceToHave, Required, Critical
+
+  task            Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  skill           Skill    @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@unique([taskId, skillId])
+  @@index([taskId])
+  @@index([skillId])
+}
+
+model TimeLog {
+  id          String   @id @default(uuid()) @db.Uuid
+  taskId      String   @db.Uuid
+  employeeId  String   @db.Uuid
+  hoursLogged Float
+  logDate     DateTime
+  notes       String?
+
+  task        Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  @@index([taskId])
+  @@index([employeeId])
+}
+
+model Leave {
+  id         String    @id @default(uuid()) @db.Uuid
+  tenantId   String    @db.Uuid
+  employeeId String    @db.Uuid
+  startDate  DateTime
+  endDate    DateTime
+  leaveType  String    // Vacation, Sick, Parental, Sabbatical, Bereavement, JuryDuty
+  status     String    // Approved, Pending
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  createdBy  String?   @db.Uuid
+  updatedBy  String?   @db.Uuid
+
+  tenant     Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  employee   Employee  @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([employeeId])
+}
+
+model Holiday {
+  id     String   @id @default(uuid()) @db.Uuid
+  name   String
+  date   DateTime
+  region String?
+
+  @@index([region])
+}
+
+model Recommendation {
+  id                         String   @id @default(uuid()) @db.Uuid
+  taskId                     String   @db.Uuid
+  employeeId                 String   @db.Uuid
+  skillMatchScore            Float
+  availabilityScore          Float
+  performanceScore           Float
+  deadlineCompatibilityScore Float
+  finalScore                 Float
+  confidenceScore            Float
+  explanation                String
+  riskNotes                  String?
+  modelVersion               Int?
+  featureVector              String?  // JSON string
+  createdAt                  DateTime @default(now())
+
+  task                       Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  @@index([taskId])
+  @@index([employeeId])
+}
+
+model WorkloadSnapshot {
+  id                   String   @id @default(uuid()) @db.Uuid
+  employeeId           String   @db.Uuid
+  weekStartDate        DateTime
+  allocatedHours       Int
+  capacityHours        Int
+  utilizationPercentage Float
+  status               String   // Available, Balanced, Moderate, Overloaded
+
+  employee             Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@index([employeeId])
+}
+
+model BalancingSuggestion {
+  id                 String   @id @default(uuid()) @db.Uuid
+  fromEmployeeId     String   @db.Uuid
+  toEmployeeId       String   @db.Uuid
+  taskId             String   @db.Uuid
+  reason             String
+  impactSummary      String
+  riskReductionScore Float
+  status             String   // Pending, Applied, Dismissed
+  createdAt          DateTime @default(now())
+
+  @@index([fromEmployeeId])
+  @@index([toEmployeeId])
+}
+
+model ChatMessage {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  question  String
+  answer    String
+  intent    String
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model ScoringConfig {
+  id                          String    @id @default(uuid()) @db.Uuid
+  tenantId                    String    @db.Uuid
+  skillMatchWeight            Float     @default(0.45)
+  availabilityWeight          Float     @default(0.35)
+  performanceWeight           Float     @default(0.15)
+  deadlineCompatibilityWeight Float     @default(0.05)
+  domainExpertBonus           Float     @default(30.0)
+  overloadThreshold           Float     @default(1.0)
+  severeOverloadThreshold     Float     @default(1.5)
+  coldStartGraceDays          Int       @default(60)
+  updatedBy                   String    @db.Uuid
+  updatedAt                   DateTime  @updatedAt
+
+  tenant                      Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+}
+
+model MlModel {
+  id                   String   @id @default(uuid()) @db.Uuid
+  version              Int      @unique
+  trainedAt            DateTime
+  trainingSampleSize   Int
+  featureImportances   String   // JSON string
+  validationRmse       Float
+  isActive             Boolean  @default(false)
+  fallbackUsed         Boolean  @default(false)
+  createdAt            DateTime @default(now())
+}
+
+model MlPrediction {
+  id                   String   @id @default(uuid()) @db.Uuid
+  taskId               String   @db.Uuid
+  employeeId           String   @db.Uuid
+  modelVersion         Int
+  featureVector        String   // JSON string
+  rawPrediction        Float
+  finalScore           Float
+  confidence           Float
+  usedFallback         Boolean
+  createdAt            DateTime @default(now())
+}
+
+model TaskDependency {
+  id               String   @id @default(uuid()) @db.Uuid
+  taskId           String   @db.Uuid
+  dependsOnTaskId  String   @db.Uuid
+  dependencyType   String   // finish_to_start, start_to_start, finish_to_finish
+  createdAt        DateTime @default(now())
+
+  task             Task     @relation("TaskDependencies", fields: [taskId], references: [id], onDelete: Cascade)
+  dependsOnTask    Task     @relation("DependsOnTask", fields: [dependsOnTaskId], references: [id], onDelete: Cascade)
+
+  @@index([taskId])
+  @@index([dependsOnTaskId])
+}
+
+model DelayPrediction {
+  id                   String   @id @default(uuid()) @db.Uuid
+  taskId               String   @db.Uuid
+  projectId            String   @db.Uuid
+  predictedAt          DateTime @default(now())
+  delayProbability     Float
+  riskLevel            String   // low, medium, high
+  topRiskFactors       String   // JSON string
+  recommendedActions   String   // JSON string
+  modelVersion         Int
+  actualDelayed        Boolean?
+  actualDelayDays      Int?
+  createdAt            DateTime @default(now())
+
+  task                 Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  @@index([taskId])
+  @@index([projectId])
+}
+
+model WorkloadForecast {
+  id                   String   @id @default(uuid()) @db.Uuid
+  employeeId           String   @db.Uuid
+  forecastDate         DateTime
+  predictedCapacity    Float
+  confidenceLower      Float
+  confidenceUpper      Float
+  generatedAt          DateTime @default(now())
+  modelVersion         Int
+
+  employee             Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@index([employeeId])
+}
+
+model FeedbackEvent {
+  id                     String    @id @default(uuid()) @db.Uuid
+  tenantId               String    @db.Uuid
+  eventType              String    // accepted, overridden, completed, reassigned
+  taskId                 String    @db.Uuid
+  recommendedEmployeeId  String    @db.Uuid
+  actualEmployeeId       String    @db.Uuid
+  overrideReason         String?
+  outcomeQuality         Float?
+  outcomeOnTime          Boolean?
+  wasPredictionCorrect   Boolean?
+  managerId              String?   @db.Uuid
+  createdAt              DateTime  @default(now())
+
+  tenant                 Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  task                   Task      @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  manager                Employee? @relation("ManagerFeedback", fields: [managerId], references: [id])
+  recommendedEmployee    Employee  @relation("RecommendedEmployee", fields: [recommendedEmployeeId], references: [id])
+  actualEmployee         Employee  @relation("ActualEmployee", fields: [actualEmployeeId], references: [id])
+
+  @@index([tenantId])
+  @@index([taskId])
+  @@index([managerId])
+}
+
+model OverridePattern {
+  id                     String   @id @default(uuid()) @db.Uuid
+  tenantId               String   @db.Uuid
+  managerId              String   @db.Uuid
+  taskType               String
+  overrideReason         String
+  recommendedEmployeeId  String   @db.Uuid
+  chosenEmployeeId       String   @db.Uuid
+  outcomeWasBetter       Boolean
+  count                  Int      @default(1)
+  lastOccurred           DateTime @default(now())
+
+  tenant                 Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  manager                Employee @relation("ManagerOverride", fields: [managerId], references: [id], onDelete: Cascade)
+  recommendedEmployee    Employee @relation("RecommendedOverride", fields: [recommendedEmployeeId], references: [id], onDelete: Cascade)
+  chosenEmployee         Employee @relation("ChosenOverride", fields: [chosenEmployeeId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([managerId])
+}
+
+model AnalyticsCache {
+  id           String   @id @default(uuid()) @db.Uuid
+  metricKey    String   @unique
+  metricValue  String   // JSON string
+  computedAt   DateTime @default(now())
+  validUntil   DateTime
+
+  @@index([metricKey])
+}
+
+model Notification {
+  id           String    @id @default(uuid()) @db.Uuid
+  recipientId  String    @db.Uuid
+  alertType    String
+  title        String
+  message      String
+  actionUrl    String?
+  actionLabel  String?
+  isRead       Boolean   @default(false)
+  priority     String    // low, medium, high, critical
+  createdAt    DateTime  @default(now())
+  readAt       DateTime?
+
+  recipient    Employee  @relation(fields: [recipientId], references: [id], onDelete: Cascade)
+
+  @@index([recipientId])
+}
+
+model NotificationPreference {
+  id           String   @id @default(uuid()) @db.Uuid
+  employeeId   String   @unique @db.Uuid
+  alertType    String
+  inApp        Boolean  @default(true)
+  email        Boolean  @default(true)
+  slack        Boolean  @default(false)
+  updatedAt    DateTime @updatedAt
+
+  employee     Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+}
