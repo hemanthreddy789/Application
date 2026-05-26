@@ -1,0 +1,253 @@
+# Enterprise Seeding: 25 Employee Personas Definition
+# Used by the seeded generation engine to construct causal, narrative-rich tenant datasets.
+
+personas:
+  - id: 1
+    code: "ROCKSTAR"
+    name: "The Rockstar"
+    description: "High performance, frequently recommended, 95%+ utilization, burnout-risk-high"
+    target_seniority: ["Senior", "Staff"]
+    utilization_target: 0.95
+    performance_mean: 95
+    on_time_rate: 0.95
+    override_affinity: "HIGH_AI_TRUST"
+
+  - id: 2
+    code: "QUIET_EXPERT"
+    name: "The Quiet Expert"
+    description: "Sole owner of a niche skill (Kafka, Postgres internals); bus factor = 1"
+    target_seniority: ["Staff", "Principal"]
+    utilization_target: 0.85
+    performance_mean: 90
+    on_time_rate: 0.90
+    override_affinity: "SPECIALIST_ONLY"
+
+  - id: 3
+    code: "STEADY_SENIOR"
+    name: "The Steady Senior"
+    description: "Mid-high performance, healthy utilization, mentors others"
+    target_seniority: ["Senior"]
+    utilization_target: 0.75
+    performance_mean: 85
+    on_time_rate: 0.85
+    override_affinity: "MENTOR_GROWTH"
+
+  - id: 4
+    code: "NEW_HIRE_DAY_5"
+    name: "The New Hire (Day 5)"
+    description: "Joined this week, no history, all skills self-declared with low confidence"
+    target_seniority: ["Junior", "Mid"]
+    utilization_target: 0.20
+    performance_mean: 70
+    on_time_rate: 0.70
+    override_affinity: "NEEDS_SHIELDING"
+
+  - id: 5
+    code: "NEW_HIRE_DAY_45"
+    name: "The New Hire (Day 45)"
+    description: "In probation period, some completed tasks, building track record"
+    target_seniority: ["Mid"]
+    utilization_target: 0.60
+    performance_mean: 75
+    on_time_rate: 0.75
+    override_affinity: "PROBATION_RAMP"
+
+  - id: 6
+    code: "RETURNER_PARENTAL"
+    name: "The Returner"
+    description: "Just back from 9-month parental leave, ramping back up"
+    target_seniority: ["Senior", "Manager"]
+    utilization_target: 0.50
+    performance_mean: 80
+    on_time_rate: 0.80
+    override_affinity: "RAMP_UP"
+
+  - id: 7
+    code: "SOON_TO_LEAVE"
+    name: "The Soon-to-Leave"
+    description: "2 weeks notice given, ramp-down period, knowledge transfer in progress"
+    target_seniority: ["Mid", "Senior"]
+    utilization_target: 0.40
+    performance_mean: 70
+    on_time_rate: 0.60
+    override_affinity: "RAMP_DOWN"
+
+  - id: 8
+    code: "UNDERPERFORMER"
+    name: "The Underperformer"
+    description: "On PIP, reduced workload, requires careful assignment"
+    target_seniority: ["Junior", "Mid"]
+    utilization_target: 0.50
+    performance_mean: 55
+    on_time_rate: 0.40
+    override_affinity: "PIP_RESTRICTED"
+
+  - id: 9
+    code: "GENERALIST"
+    name: "The Generalist"
+    description: "15+ skills, none deep; good for unblocking, weak for specialization"
+    target_seniority: ["Mid", "Senior"]
+    utilization_target: 0.80
+    performance_mean: 80
+    on_time_rate: 0.80
+    override_affinity: "GENERAL_UNBLOCKER"
+
+  - id: 10
+    code: "SPECIALIST"
+    name: "The Specialist"
+    description: "2-3 deep skills, declines everything else"
+    target_seniority: ["Senior", "Staff"]
+    utilization_target: 0.85
+    performance_mean: 90
+    on_time_rate: 0.90
+    override_affinity: "STRICT_DOMAIN"
+
+  - id: 11
+    code: "PART_TIMER"
+    name: "The Part-Timer"
+    description: "24 hours/week, Mon-Wed only (parent of young child)"
+    target_seniority: ["Mid", "Senior"]
+    utilization_target: 0.90
+    performance_mean: 85
+    on_time_rate: 0.85
+    override_affinity: "PART_TIME_STRICT"
+
+  - id: 12
+    code: "CONTRACTOR"
+    name: "The Contractor"
+    description: "Fixed-term, higher cost rate, no PTO, end-date in 4 months"
+    target_seniority: ["Senior"]
+    utilization_target: 0.95
+    performance_mean: 88
+    on_time_rate: 0.90
+    override_affinity: "CONTRACTOR_FIXED"
+
+  - id: 13
+    code: "INTERN"
+    name: "The Intern"
+    description: "90-day appointment, low capacity, paired with a mentor"
+    target_seniority: ["Intern"]
+    utilization_target: 0.70
+    performance_mean: 65
+    on_time_rate: 0.60
+    override_affinity: "MENTOR_PAIRED"
+
+  - id: 14
+    code: "CROSS_TIMEZONE"
+    name: "The Cross-Timezone Engineer"
+    description: "11-hour time-zone offset from team; reduced effective collaboration time"
+    target_seniority: ["Mid", "Senior"]
+    utilization_target: 0.75
+    performance_mean: 80
+    on_time_rate: 0.75
+    override_affinity: "ASYNC_ONLY"
+
+  - id: 15
+    code: "ON_CALL_LEAD"
+    name: "The On-Call Lead"
+    description: "This week on PagerDuty rotation; effective capacity reduced 30%"
+    target_seniority: ["Senior", "Staff"]
+    utilization_target: 0.60
+    performance_mean: 85
+    on_time_rate: 0.85
+    override_affinity: "ON_CALL_SHIELD"
+
+  - id: 16
+    code: "HEAVY_REVIEWER"
+    name: "The Heavy Reviewer"
+    description: "12+ open PR reviews; invisible work load high"
+    target_seniority: ["Staff", "Principal"]
+    utilization_target: 0.50
+    performance_mean: 92
+    on_time_rate: 0.90
+    override_affinity: "INVISIBLE_WORK"
+
+  - id: 17
+    code: "SKILL_STALE"
+    name: "The Skill-Stale Engineer"
+    description: "Has React listed but last used 18 months ago — should be decay-penalized"
+    target_seniority: ["Senior"]
+    utilization_target: 0.80
+    performance_mean: 80
+    on_time_rate: 0.80
+    override_affinity: "DECAY_CANDIDATE"
+
+  - id: 18
+    code: "MANAGER_CODER"
+    name: "The Manager-Coder"
+    description: "70% management overhead, 30% IC work"
+    target_seniority: ["Manager"]
+    utilization_target: 0.30
+    performance_mean: 85
+    on_time_rate: 0.85
+    override_affinity: "MANAGER_OVERHEAD"
+
+  - id: 19
+    code: "DESIGNER"
+    name: "The Designer"
+    description: "Different skill taxonomy (Figma, design systems), different task types"
+    target_seniority: ["Mid", "Senior"]
+    utilization_target: 0.85
+    performance_mean: 88
+    on_time_rate: 0.88
+    override_affinity: "DESIGN_TAXONOMY"
+
+  - id: 20
+    code: "QA_SPECIALIST"
+    name: "The QA Specialist"
+    description: "Pairs with devs; downstream-blocked when devs run late"
+    target_seniority: ["Mid", "Senior"]
+    utilization_target: 0.80
+    performance_mean: 82
+    on_time_rate: 0.80
+    override_affinity: "QA_DOWNSTREAM"
+
+  - id: 21
+    code: "DEVOPS_SRE"
+    name: "The DevOps/SRE"
+    description: "Carries on-call burden, infra projects only"
+    target_seniority: ["Senior", "Staff"]
+    utilization_target: 0.70
+    performance_mean: 88
+    on_time_rate: 0.88
+    override_affinity: "INFRA_ONLY"
+
+  - id: 22
+    code: "DATA_SCIENTIST"
+    name: "The Data Scientist"
+    description: "Project-based, longer task durations (weeks), distinct skill set"
+    target_seniority: ["Senior"]
+    utilization_target: 0.85
+    performance_mean: 86
+    on_time_rate: 0.85
+    override_affinity: "DATA_TAXONOMY"
+
+  - id: 23
+    code: "RECENT_PROMOTION"
+    name: "The Recent Promotion"
+    description: "New manager skills, transitioning role, capacity halved"
+    target_seniority: ["Manager"]
+    utilization_target: 0.40
+    performance_mean: 80
+    on_time_rate: 0.80
+    override_affinity: "PROMOTION_RAMP"
+
+  - id: 24
+    code: "REMOTE_DIFFERENT_COUNTRY"
+    name: "The Remote-Different-Country"
+    description: "Different public holidays, language preference settings"
+    target_seniority: ["Mid", "Senior"]
+    utilization_target: 0.80
+    performance_mean: 82
+    on_time_rate: 0.82
+    override_affinity: "REGIONAL_HOLIDAYS"
+
+  - id: 25
+    code: "SABBATICAL_RETURNER"
+    name: "The Sabbatical-Returner"
+    description: "Returning from 3-month sabbatical in 2 weeks, slot upcoming work"
+    target_seniority: ["Senior"]
+    utilization_target: 0.60
+    performance_mean: 85
+    on_time_rate: 0.85
+    override_affinity: "SABBATICAL_RAMP"

@@ -1,0 +1,114 @@
+# Enterprise Seeding: Per-Region Holiday Calendars
+
+locations:
+  US:
+    work_week: ["Mon", "Tue", "Wed", "Thu", "Fri"]
+    holidays:
+      - "New Year's Day"
+      - "Martin Luther King Jr. Day"
+      - "Presidents' Day"
+      - "Memorial Day"
+      - "Juneteenth"
+      - "Independence Day"
+      - "Labor Day"
+      - "Thanksgiving"
+      - "Day after Thanksgiving"
+      - "Christmas Eve"
+      - "Christmas Day"
+      - "New Year's Eve"
+
+  India_Bangalore:
+    work_week: ["Mon", "Tue", "Wed", "Thu", "Fri"]
+    holidays:
+      - "New Year's Day"
+      - "Republic Day"
+      - "Holi"
+      - "Good Friday"
+      - "May Day"
+      - "Independence Day"
+      - "Gandhi Jayanti"
+      - "Dussehra"
+      - "Diwali"
+      - "Karnataka Rajyotsava"
+      - "Christmas Day"
+
+  Israel_TelAviv:
+    work_week: ["Sun", "Mon", "Tue", "Wed", "Thu"]
+    holidays:
+      - "Purim"
+      - "Passover"
+      - "Independence Day"
+      - "Shavuot"
+      - "Rosh Hashanah"
+      - "Yom Kippur"
+      - "Sukkot"
+
+  UAE_Dubai:
+    work_week: ["Sun", "Mon", "Tue", "Wed", "Thu"]
+    holidays:
+      - "New Year's Day"
+      - "Eid al-Fitr"
+      - "Arafat Day"
+      - "Eid al-Adha"
+      - "Islamic New Year"
+      - "Prophet's Birthday"
+      - "UAE Commemoration Day"
+      - "UAE National Day"
+
+  Ireland_Dublin:
+    work_week: ["Mon", "Tue", "Wed", "Thu", "Fri"]
+    holidays:
+      - "New Year's Day"
+      - "St. Patrick's Day"
+      - "Easter Monday"
+      - "May Day Bank Holiday"
+      - "June Bank Holiday"
+      - "August Bank Holiday"
+      - "October Bank Holiday"
+      - "Christmas Day"
+      - "St. Stephen's Day"
+
+  Japan_Tokyo:
+    work_week: ["Mon", "Tue", "Wed", "Thu", "Fri"]
+    holidays:
+      - "New Year's Day"
+      - "Coming of Age Day"
+      - "National Foundation Day"
+      - "Vernal Equinox Day"
+      - "Showa Day"
+      - "Constitution Memorial Day"
+      - "Greenery Day"
+      - "Children's Day"
+      - "Marine Day"
+      - "Mountain Day"
+      - "Respect for the Aged Day"
+      - "Autumnal Equinox Day"
+      - "Sports Day"
+      - "Culture Day"
+      - "Labor Thanksgiving Day"
+
+  Brazil_SaoPaulo:
+    work_week: ["Mon", "Tue", "Wed", "Thu", "Fri"]
+    holidays:
+      - "New Year's Day"
+      - "Carnival"
+      - "Good Friday"
+      - "Tiradentes Day"
+      - "Labor Day"
+      - "Independence Day"
+      - "Our Lady of Aparecida"
+      - "All Souls' Day"
+      - "Proclamation of the Republic"
+      - "Christmas Day"
+
+  UK:
+    work_week: ["Mon", "Tue", "Wed", "Thu", "Fri"]
+    holidays:
+      - "New Year's Day"
+      - "Good Friday"
+      - "Easter Monday"
+      - "Early May Bank Holiday"
+      - "Spring Bank Holiday"
+      - "Summer Bank Holiday"
+      - "Christmas Day"
+      - "Boxing Day"

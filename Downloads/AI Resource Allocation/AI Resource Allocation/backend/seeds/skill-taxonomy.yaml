@@ -1,0 +1,130 @@
+# Enterprise Seeding: Hierarchical Skill Taxonomy
+
+categories:
+  Languages:
+    - JavaScript
+    - TypeScript
+    - Python
+    - Go
+    - Rust
+    - Java
+    - Kotlin
+    - Swift
+    - Ruby
+    - PHP
+    - C#
+    - C++
+
+  Frontend:
+    - React
+    - Vue.js
+    - Angular
+    - Svelte
+    - Next.js
+    - Nuxt
+    - HTML/CSS
+    - Tailwind CSS
+    - SASS
+    - Webpack
+    - Vite
+    - React Native
+    - Flutter
+
+  Backend:
+    - Node.js
+    - Express
+    - NestJS
+    - Django
+    - FastAPI
+    - Flask
+    - Spring Boot
+    - Rails
+    - Laravel
+    - gRPC
+    - GraphQL
+    - REST API design
+
+  Databases:
+    - PostgreSQL
+    - MySQL
+    - MongoDB
+    - Redis
+    - Elasticsearch
+    - Cassandra
+    - DynamoDB
+    - Snowflake
+    - BigQuery
+    - ClickHouse
+    - pgvector
+
+  Infrastructure:
+    - AWS
+    - GCP
+    - Azure
+    - Kubernetes
+    - Docker
+    - Terraform
+    - Ansible
+    - Helm
+    - GitHub Actions
+    - GitLab CI
+    - Jenkins
+    - ArgoCD
+
+  Data_ML:
+    - Pandas
+    - NumPy
+    - scikit-learn
+    - TensorFlow
+    - PyTorch
+    - Spark
+    - Airflow
+    - dbt
+    - LangChain
+    - Vector DBs
+    - MLOps
+    - Feature stores
+
+  Specialized:
+    - Kafka
+    - RabbitMQ
+    - WebRTC
+    - WebSockets
+    - OAuth/OIDC
+    - SAML
+    - Stripe
+    - Twilio
+    - FFmpeg
+    - OpenCV
+    - CUDA
+
+  Design:
+    - Figma
+    - Sketch
+    - Adobe XD
+    - Design Systems
+    - User Research
+    - Prototyping
+    - Accessibility (WCAG)
+
+  Soft_Skills:
+    - Technical Leadership
+    - Cross-team Communication
+    - Mentorship
+    - Public Speaking
+    - Customer Empathy
+    - Technical Writing
+
+variations:
+  - canonical: "Node.js"
+    aliases: ["NodeJS", "node js", "Node"]
+  - canonical: "React"
+    aliases: ["ReactJS", "React.js", "React 18"]
+  - canonical: "PostgreSQL"
+    aliases: ["Postgres", "psql"]
+  - canonical: "Kubernetes"
+    aliases: ["K8s", "kube"]
+  - canonical: "JavaScript"
+    aliases: ["JS", "Javascript"]
+  - canonical: "TypeScript"
+    aliases: ["TS", "Typescript"]

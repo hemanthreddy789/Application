@@ -1,0 +1,82 @@
+# Enterprise Seeding: Project Archetypes Definitions
+
+archetypes:
+  - code: "GREENFIELD_MVP"
+    name: "Greenfield MVP"
+    description: "New product, ambiguous requirements, exploration tasks"
+    complexity_mix: { Low: 0.2, Medium: 0.5, High: 0.3 }
+    duration_weeks_mean: 8
+    task_count_mean: 35
+    dependency_density: 0.15
+
+  - code: "CUSTOMER_BUG_SPRINT"
+    name: "Customer Bug Sprint"
+    description: "Many small tasks, short deadlines, customer-attributed"
+    complexity_mix: { Low: 0.6, Medium: 0.3, High: 0.1 }
+    duration_weeks_mean: 2
+    task_count_mean: 50
+    dependency_density: 0.05
+
+  - code: "INFRA_MIGRATION"
+    name: "Infrastructure Migration"
+    description: "Long-running, dependency-heavy, specialist-required"
+    complexity_mix: { Low: 0.1, Medium: 0.4, High: 0.5 }
+    duration_weeks_mean: 16
+    task_count_mean: 80
+    dependency_density: 0.40
+
+  - code: "COMPLIANCE_INITIATIVE"
+    name: "Compliance Initiative"
+    description: "Hard regulatory deadline, multi-team coordination (SOC2, GDPR)"
+    complexity_mix: { Low: 0.3, Medium: 0.5, High: 0.2 }
+    duration_weeks_mean: 12
+    task_count_mean: 60
+    dependency_density: 0.25
+
+  - code: "PERF_OPTIMIZATION"
+    name: "Performance Optimization"
+    description: "Discovery-heavy, hard to estimate, specialist-required"
+    complexity_mix: { Low: 0.1, Medium: 0.3, High: 0.6 }
+    duration_weeks_mean: 6
+    task_count_mean: 25
+    dependency_density: 0.20
+
+  - code: "MOBILE_LAUNCH"
+    name: "Mobile App Launch"
+    description: "Cross-functional, dependency chains, asset coordination"
+    complexity_mix: { Low: 0.2, Medium: 0.5, High: 0.3 }
+    duration_weeks_mean: 10
+    task_count_mean: 70
+    dependency_density: 0.30
+
+  - code: "API_V2_ROLLOUT"
+    name: "API V2 Rollout"
+    description: "Breaking changes, versioning, deprecation timeline"
+    complexity_mix: { Low: 0.1, Medium: 0.4, High: 0.5 }
+    duration_weeks_mean: 14
+    task_count_mean: 90
+    dependency_density: 0.35
+
+  - code: "ML_MODEL_DEV"
+    name: "ML Model Development"
+    description: "Long iteration cycles, data-dependent, research-flavored"
+    complexity_mix: { Low: 0.1, Medium: 0.3, High: 0.6 }
+    duration_weeks_mean: 12
+    task_count_mean: 40
+    dependency_density: 0.10
+
+  - code: "STUCK_AT_RISK"
+    name: "Stuck/At-Risk Project"
+    description: "Behind schedule, key person dependency, high override rate"
+    complexity_mix: { Low: 0.1, Medium: 0.4, High: 0.5 }
+    duration_weeks_mean: 12
+    task_count_mean: 45
+    dependency_density: 0.35
+
+  - code: "SUCCESSFUL_COMPLETED"
+    name: "Successful Recently-Completed"
+    description: "Historical data for ML training; positive feedback loop"
+    complexity_mix: { Low: 0.3, Medium: 0.5, High: 0.2 }
+    duration_weeks_mean: 8
+    task_count_mean: 40
+    dependency_density: 0.20

@@ -1,0 +1,75 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ai-postgres-secret
+  namespace: default
+type: Opaque
+stringData:
+  postgres-password: "ai_secure_password_2026"
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: ai-postgres
+  namespace: default
+spec:
+  serviceName: "ai-postgres"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ai-postgres
+  template:
+    metadata:
+      labels:
+        app: ai-postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:15-alpine
+        ports:
+        - containerPort: 5432
+          name: dbport
+        env:
+        - name: POSTGRES_USER
+          value: "ai_user"
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: ai-postgres-secret
+              key: postgres-password
+        - name: POSTGRES_DB
+          value: "ai_resource_allocation"
+        volumeMounts:
+        - name: postgres-storage
+          mountPath: /var/lib/postgresql/data
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+        livenessProbe:
+          exec:
+            command: ["pg_isready", "-U", "ai_user", "-d", "ai_resource_allocation"]
+          initialDelaySeconds: 15
+          periodSeconds: 10
+  volumeClaimTemplates:
+  - metadata:
+      name: postgres-storage
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 20Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ai-postgres
+  namespace: default
+spec:
+  ports:
+  - port: 5432
+  selector:
+    app: ai-postgres
