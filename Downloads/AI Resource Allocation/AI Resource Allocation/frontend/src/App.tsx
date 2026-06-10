@@ -1,18 +1,16 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './layouts/Layout';
 import Dashboard from './pages/Dashboard';
-import Employees from './pages/Employees';
 import Tasks from './pages/Tasks';
-import Heatmap from './pages/Heatmap';
 import Chat from './pages/Chat';
-import AIInsights from './pages/AIInsights';
 import Login from './pages/Login';
-import Forecast from './pages/Forecast';
 import EmployeeDashboard from './pages/EmployeeDashboard';
-import StrategyHub from './pages/StrategyHub';
+import WorkforceCenter from './pages/WorkforceCenter';
+import Settings from './pages/Settings';
+import Sprint from './pages/Sprint';
 
 function App() {
-  const isAuthenticated = true; // Mock
+  const isAuthenticated = sessionStorage.getItem('riq_auth') === '1';
 
   if (!isAuthenticated) return <Login />;
 
@@ -22,14 +20,21 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Navigate to="/dashboard" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
-          <Route path="employees" element={<Employees />} />
           <Route path="tasks" element={<Tasks />} />
-          <Route path="heatmap" element={<Heatmap />} />
-          <Route path="forecast" element={<Forecast />} />
-          <Route path="strategy" element={<StrategyHub />} />
+          <Route path="workforce" element={<WorkforceCenter />} />
           <Route path="employee-dashboard" element={<EmployeeDashboard />} />
           <Route path="chat" element={<Chat />} />
-          <Route path="ai-insights" element={<AIInsights />} />
+          <Route path="settings" element={<Settings />} />
+          <Route path="sprint"   element={<Sprint />} />
+          {/* Legacy redirects → Workforce Hub */}
+          <Route path="employees"     element={<Navigate to="/workforce?tab=people"   replace />} />
+          <Route path="heatmap"       element={<Navigate to="/workforce?tab=capacity"  replace />} />
+          <Route path="leave-tracker" element={<Navigate to="/workforce?tab=leave"     replace />} />
+          <Route path="forecast"      element={<Navigate to="/workforce?tab=strategy"  replace />} />
+          <Route path="strategy"      element={<Navigate to="/workforce?tab=strategy"  replace />} />
+          <Route path="ai-insights"   element={<Navigate to="/chat" replace />} />
+          <Route path="analytics"     element={<Navigate to="/dashboard" replace />} />
+          <Route path="policies"      element={<Navigate to="/chat" replace />} />
         </Route>
       </Routes>
     </BrowserRouter>

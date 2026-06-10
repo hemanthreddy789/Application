@@ -65,33 +65,33 @@ export default function Employees() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Employees</h1>
-        <button 
+        <button
           onClick={() => setShowAddForm(true)}
-          className="bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-800 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 transition-all"
         >
           + Add Employee
         </button>
       </div>
 
       {showAddForm && (
-        <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
-          <h2 className="text-lg font-semibold mb-4">Add New Employee (Dummy Data)</h2>
-          <form onSubmit={handleAddEmployee} className="flex gap-4 items-end">
+        <div className="rounded-2xl p-5" style={{ background: 'var(--bg-sub)', border: '1px solid var(--card-border)' }}>
+          <h2 className="text-sm font-bold text-white mb-4">Add New Employee</h2>
+          <form onSubmit={handleAddEmployee} className="flex gap-3 items-end flex-wrap">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
-              <input required type="text" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="border border-gray-300 rounded-lg px-3 py-2 text-sm w-48" placeholder="John Doe" />
+              <label className="block text-xs text-slate-500 mb-1">Name</label>
+              <input required type="text" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="rounded-lg px-3 py-2 text-sm w-44 text-white outline-none" style={{ background: 'var(--bg-sub)', border: '1px solid var(--card-border)' }} placeholder="John Doe" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-              <input required type="email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="border border-gray-300 rounded-lg px-3 py-2 text-sm w-48" placeholder="john@example.com" />
+              <label className="block text-xs text-slate-500 mb-1">Email</label>
+              <input required type="email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="rounded-lg px-3 py-2 text-sm w-44 text-white outline-none" style={{ background: 'var(--bg-sub)', border: '1px solid var(--card-border)' }} placeholder="john@company.com" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Role</label>
-              <input required type="text" value={formData.role} onChange={e => setFormData({...formData, role: e.target.value})} className="border border-gray-300 rounded-lg px-3 py-2 text-sm w-32" placeholder="Developer" />
+              <label className="block text-xs text-slate-500 mb-1">Role</label>
+              <input required type="text" value={formData.role} onChange={e => setFormData({...formData, role: e.target.value})} className="rounded-lg px-3 py-2 text-sm w-32 text-white outline-none" style={{ background: 'var(--bg-sub)', border: '1px solid var(--card-border)' }} placeholder="Developer" />
             </div>
             <div className="flex gap-2">
-              <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700">Save</button>
-              <button type="button" onClick={() => setShowAddForm(false)} className="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200">Cancel</button>
+              <button type="submit" className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-indigo-700">Save</button>
+              <button type="button" onClick={() => setShowAddForm(false)} className="text-slate-400 px-4 py-2 rounded-lg text-sm hover:text-white transition-colors" style={{ background: 'rgba(255,255,255,0.06)' }}>Cancel</button>
             </div>
           </form>
         </div>
@@ -99,60 +99,55 @@ export default function Employees() {
 
       {selectedEmployeeId && profileData && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4 z-50">
-          <div className="bg-gray-50 rounded-xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden shadow-2xl">
-            <div className="bg-white p-6 border-b flex justify-between items-center">
+          <div className="rounded-2xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden" style={{ background: 'var(--card)', border: '1px solid var(--card-border)' }}>
+            <div className="p-6 flex justify-between items-center shrink-0" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
               <div>
-                <h2 className="text-2xl font-bold text-slate-900">{profileData.name}</h2>
-                <p className="text-gray-500">{profileData.role} • {profileData.department} • {profileData.experienceLevel} Level</p>
+                <h2 className="text-xl font-black text-white">{profileData.name}</h2>
+                <p className="text-slate-400 text-sm mt-0.5">{profileData.role} · {profileData.department} · {profileData.experienceLevel} Level</p>
               </div>
-              <button onClick={() => { setSelectedEmployeeId(null); setProfileData(null); }} className="text-gray-400 hover:text-gray-800 text-xl font-bold p-2">&times;</button>
+              <button onClick={() => { setSelectedEmployeeId(null); setProfileData(null); }} className="text-slate-500 hover:text-white text-xl font-bold p-2 transition-colors">&times;</button>
             </div>
             
             <div className="p-6 overflow-y-auto flex-1 space-y-6">
               
               {/* Top Stats */}
-              <div className="grid grid-cols-4 gap-4">
-                <div className="bg-white p-4 rounded-xl border border-gray-200 text-center">
-                  <p className="text-gray-500 text-sm">Workload</p>
-                  <p className="text-2xl font-bold text-blue-600">{Math.round((profileData.currentAllocatedHours / profileData.weeklyCapacityHours) * 100)}%</p>
-                </div>
-                <div className="bg-white p-4 rounded-xl border border-gray-200 text-center">
-                  <p className="text-gray-500 text-sm">Active Projects</p>
-                  <p className="text-2xl font-bold text-indigo-600">{profileData.stats?.totalProjects || 0}</p>
-                </div>
-                <div className="bg-white p-4 rounded-xl border border-gray-200 text-center">
-                  <p className="text-gray-500 text-sm">Tasks In Progress</p>
-                  <p className="text-2xl font-bold text-amber-600">{profileData.stats?.activeTasks || 0}</p>
-                </div>
-                <div className="bg-white p-4 rounded-xl border border-gray-200 text-center">
-                  <p className="text-gray-500 text-sm">Completed Tasks</p>
-                  <p className="text-2xl font-bold text-green-600">{profileData.stats?.completedTasks || 0}</p>
-                </div>
+              <div className="grid grid-cols-4 gap-3">
+                {[
+                  { label: 'Workload', value: `${Math.round((profileData.currentAllocatedHours / Math.max(1, profileData.weeklyCapacityHours)) * 100)}%`, color: '#818cf8' },
+                  { label: 'Active Projects', value: profileData.stats?.totalProjects || 0, color: '#6366f1' },
+                  { label: 'Tasks In Progress', value: profileData.stats?.activeTasks || 0, color: '#f59e0b' },
+                  { label: 'Completed Tasks', value: profileData.stats?.completedTasks || 0, color: '#10b981' },
+                ].map(({ label, value, color }) => (
+                  <div key={label} className="p-4 rounded-xl text-center" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                    <p className="text-slate-400 text-xs mb-1">{label}</p>
+                    <p className="text-2xl font-black" style={{ color }}>{value}</p>
+                  </div>
+                ))}
               </div>
 
               {/* Skills Section */}
-              <div className="bg-white p-5 rounded-xl border border-gray-200">
-                <h3 className="text-lg font-bold mb-4">Skills & Certifications</h3>
+              <div className="p-5 rounded-xl" style={{ background: 'var(--bg-sub)', border: '1px solid var(--card-border)' }}>
+                <h3 className="text-sm font-bold text-white mb-3">Skills & Certifications</h3>
                 <div className="flex flex-wrap gap-2 mb-4">
                   {profileData.skills.map((s: any) => (
-                    <span key={s.skill.id} className="bg-slate-100 border border-slate-200 text-slate-700 px-3 py-1 rounded-full text-sm flex items-center gap-1">
-                      <span className="font-medium">{s.skill.name}</span>
-                      <span className="text-gray-400">L{s.proficiencyLevel}</span>
-                      {s.yearsOfExperience > 0 && <span className="text-blue-500 text-xs ml-1 bg-blue-50 px-1.5 rounded">{s.yearsOfExperience}y exp</span>}
-                      {s.isCertified && <span className="text-amber-500 ml-1" title="Certified">★</span>}
+                    <span key={s.skill.id} className="px-3 py-1 rounded-full text-xs flex items-center gap-1 text-indigo-300" style={{ background: 'rgba(99,102,241,0.12)', border: '1px solid rgba(99,102,241,0.25)' }}>
+                      <span className="font-semibold">{s.skill.name}</span>
+                      <span className="text-slate-500">L{s.proficiencyLevel}</span>
+                      {s.yearsOfExperience > 0 && <span className="text-cyan-400 text-[10px] ml-1">{s.yearsOfExperience}y</span>}
+                      {s.isCertified && <span className="text-amber-400 ml-1" title="Certified">★</span>}
                     </span>
                   ))}
                 </div>
-                <form onSubmit={handleAddSkill} className="flex gap-2 items-end bg-gray-50 p-3 rounded-lg border border-gray-200 mt-4">
+                <form onSubmit={handleAddSkill} className="flex gap-2 items-end p-3 rounded-lg" style={{ background: 'var(--bg-sub)', border: '1px solid var(--card-border)' }}>
                   <div className="flex-1">
-                    <label className="block text-xs text-gray-500 mb-1">Add New Skill</label>
-                    <input required type="text" placeholder="e.g. React" value={newSkill.name} onChange={e => setNewSkill({...newSkill, name: e.target.value})} className="w-full border rounded p-2 text-sm" />
+                    <label className="block text-xs text-slate-500 mb-1">Add New Skill</label>
+                    <input required type="text" placeholder="e.g. React" value={newSkill.name} onChange={e => setNewSkill({...newSkill, name: e.target.value})} className="w-full rounded-lg px-3 py-2 text-sm text-white outline-none" style={{ background: 'var(--bg-sub)', border: '1px solid var(--card-border)' }} />
                   </div>
                   <div>
-                    <label className="block text-xs text-gray-500 mb-1">Level (1-5)</label>
-                    <input required type="number" min="1" max="5" value={newSkill.proficiencyLevel} onChange={e => setNewSkill({...newSkill, proficiencyLevel: parseInt(e.target.value)})} className="w-16 border rounded p-2 text-sm" />
+                    <label className="block text-xs text-slate-500 mb-1">Level (1-5)</label>
+                    <input required type="number" min="1" max="5" value={newSkill.proficiencyLevel} onChange={e => setNewSkill({...newSkill, proficiencyLevel: parseInt(e.target.value)})} className="w-16 rounded-lg px-3 py-2 text-sm text-white outline-none" style={{ background: 'var(--bg-sub)', border: '1px solid var(--card-border)' }} />
                   </div>
-                  <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700 font-medium">Add Skill</button>
+                  <button type="submit" className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-indigo-700 font-semibold">Add Skill</button>
                 </form>
               </div>
 

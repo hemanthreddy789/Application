@@ -1,9 +1,319 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  body {
-    @apply bg-background text-foreground antialiased;
-  }
+/* ══════════════════════════════════════════════
+   LIGHT (default) — pure white, Sarvam quality
+══════════════════════════════════════════════ */
+:root {
+  /* Backgrounds */
+  --bg:       #ffffff;
+  --bg-sub:   #f5f5f5;
+
+  /* Sarvam sky gradient  */
+  --sky:
+    radial-gradient(ellipse 90% 55% at 50% -5%,
+      rgba(251,140,50,0.18) 0%,
+      rgba(200,185,240,0.10) 55%,
+      transparent 100%),
+    radial-gradient(ellipse 60% 40% at 85% 20%,
+      rgba(200,185,255,0.10) 0%, transparent 70%);
+
+  /* Cards */
+  --card:         #ffffff;
+  --card-hover:   #fafafa;
+  --card-border:  rgba(0,0,0,0.07);
+  --card-shadow:  0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.06);
+  --card-shadow-h:0 2px 6px rgba(0,0,0,0.05), 0 12px 40px rgba(0,0,0,0.10);
+
+  /* Sidebar */
+  --sb-bg:     #ffffff;
+  --sb-border: rgba(0,0,0,0.06);
+
+  /* Text */
+  --t1: #0a0a0a;
+  --t2: #3a3a3a;
+  --t3: #888888;
+  --t4: #c0c0c0;
+
+  /* Accent */
+  --ac:    #1a1a2e;
+  --ac-fg: #ffffff;
+  --ac2:   #1565c0;
+
+  /* Semantic */
+  --ok:  #2e7d32; --ok-bg:  rgba(46,125,50,0.08);
+  --err: #e53935; --err-bg: rgba(229,57,53,0.08);
+  --warn:#e65100; --warn-bg:rgba(230,81,0,0.08);
+  --blu: #1565c0; --blu-bg: rgba(21,101,192,0.08);
+
+  /* Fonts */
+  --font-serif: 'Instrument Serif', Georgia, serif;
+  --font:       'DM Sans', system-ui, sans-serif;
+
+  /* ── Backward-compat aliases (keep existing pages working) ── */
+  --glass:        var(--card);
+  --glass-border: var(--card-border);
+  --glass-heavy:  var(--bg-sub);
+  --glass-top:    rgba(0,0,0,0.09);
+  --tp:  var(--t1);
+  --ts:  var(--t2);
+  --tm:  var(--t3);
+  --inp: var(--bg-sub);
+  --inb: var(--card-border);
+  --btn: var(--ac);
+  --btnt:var(--ac-fg);
+  --nav: var(--bg-sub);
+  --sh:  var(--card-shadow);
+  --ins: none;
+  --o1:  transparent;
+  --o2:  transparent;
 }
+
+/* ══════════════════════════════════════════════
+   DARK
+══════════════════════════════════════════════ */
+[data-mode="dark"] {
+  --bg:       #0a0a0a;
+  --bg-sub:   #111111;
+  --sky:
+    radial-gradient(ellipse 80% 50% at 50% -5%,
+      rgba(251,140,50,0.12) 0%,
+      rgba(130,80,220,0.10) 40%,
+      transparent 100%);
+
+  --card:          #161616;
+  --card-hover:    #1c1c1c;
+  --card-border:   rgba(255,255,255,0.07);
+  --card-shadow:   0 1px 3px rgba(0,0,0,0.40), 0 4px 16px rgba(0,0,0,0.50);
+  --card-shadow-h: 0 2px 6px rgba(0,0,0,0.50), 0 12px 40px rgba(0,0,0,0.70);
+
+  --sb-bg:     #0f0f0f;
+  --sb-border: rgba(255,255,255,0.05);
+
+  --t1: #f5f5f5;
+  --t2: #a0a0a0;
+  --t3: #606060;
+  --t4: #303030;
+
+  --ac:    #f5f5f5;
+  --ac-fg: #0a0a0a;
+  --ac2:   #60a5fa;
+
+  --ok:  #4caf50; --ok-bg:  rgba(76,175,80,0.12);
+  --err: #ef5350; --err-bg: rgba(239,83,80,0.12);
+  --warn:#ff9800; --warn-bg:rgba(255,152,0,0.12);
+  --blu: #42a5f5; --blu-bg: rgba(66,165,245,0.12);
+
+  /* backward compat */
+  --glass:        rgba(255,255,255,0.05);
+  --glass-border: rgba(255,255,255,0.09);
+  --glass-heavy:  rgba(255,255,255,0.09);
+  --glass-top:    rgba(255,255,255,0.15);
+  --tp: #f5f5f5;
+  --ts: rgba(245,245,245,0.58);
+  --tm: rgba(245,245,245,0.36);
+  --inp: rgba(255,255,255,0.07);
+  --inb: rgba(255,255,255,0.14);
+  --btn: var(--ac2);
+  --btnt: #ffffff;
+  --nav: rgba(255,255,255,0.08);
+  --sh:  0 8px 32px rgba(0,0,0,0.45);
+  --ins: none;
+  --o1: rgba(255,255,255,0.03);
+  --o2: rgba(0,0,0,0.50);
+}
+
+/* ══════════════════════════════════════════════
+   BASE
+══════════════════════════════════════════════ */
+@layer base {
+  *, ::before, ::after { box-sizing: border-box; }
+  html, body { height: 100%; overflow: hidden; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+  body {
+    font-family: var(--font);
+    font-size: 14px;
+    color: var(--t1);
+    background: var(--bg);
+    transition: background 0.4s, color 0.3s;
+  }
+  button, input, select, textarea { font-family: var(--font); }
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--card-border); border-radius: 2px; }
+  * { scrollbar-width: thin; scrollbar-color: var(--card-border) transparent; }
+}
+
+/* ══════════════════════════════════════════════
+   LIGHT-MODE TAILWIND OVERRIDES
+   (dark Tailwind text classes → theme-aware)
+══════════════════════════════════════════════ */
+html:not([data-mode="dark"]) main .text-white,
+html:not([data-mode="dark"]) main .text-slate-100,
+html:not([data-mode="dark"]) main .text-slate-200 { color: var(--t1) !important; }
+
+html:not([data-mode="dark"]) main .text-slate-300,
+html:not([data-mode="dark"]) main .text-slate-400 { color: var(--t2) !important; }
+
+html:not([data-mode="dark"]) main .text-slate-500,
+html:not([data-mode="dark"]) main .text-slate-600,
+html:not([data-mode="dark"]) main .text-slate-700 { color: var(--t3) !important; }
+
+html:not([data-mode="dark"]) main .text-indigo-300,
+html:not([data-mode="dark"]) main .text-indigo-400 { color: var(--ac) !important; }
+
+html:not([data-mode="dark"]) main .text-cyan-400,
+html:not([data-mode="dark"]) main .text-emerald-400 { color: var(--ok) !important; }
+
+/* Global readability safety net for pages that still contain older dark/vibrant Tailwind styles. */
+html:not([data-mode="dark"]) main .bg-slate-950,
+html:not([data-mode="dark"]) main .bg-slate-900,
+html:not([data-mode="dark"]) main .bg-slate-800,
+html:not([data-mode="dark"]) main .bg-slate-700,
+html:not([data-mode="dark"]) main .bg-slate-900\/60,
+html:not([data-mode="dark"]) main .bg-slate-800\/60,
+html:not([data-mode="dark"]) main .bg-indigo-950,
+html:not([data-mode="dark"]) main .bg-purple-950 {
+  background: var(--card) !important;
+  color: var(--t1) !important;
+  border-color: var(--card-border) !important;
+  box-shadow: var(--card-shadow) !important;
+}
+
+html:not([data-mode="dark"]) main .from-indigo-950,
+html:not([data-mode="dark"]) main .from-purple-950,
+html:not([data-mode="dark"]) main .from-blue-900,
+html:not([data-mode="dark"]) main .from-emerald-900,
+html:not([data-mode="dark"]) main .from-purple-900,
+html:not([data-mode="dark"]) main .from-orange-900,
+html:not([data-mode="dark"]) main .from-teal-900,
+html:not([data-mode="dark"]) main .from-red-900,
+html:not([data-mode="dark"]) main .from-green-900,
+html:not([data-mode="dark"]) main .from-yellow-900,
+html:not([data-mode="dark"]) main .from-slate-900 {
+  --tw-gradient-from: var(--card) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: rgb(255 255 255 / 0) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+}
+
+html:not([data-mode="dark"]) main .to-indigo-800,
+html:not([data-mode="dark"]) main .to-blue-800,
+html:not([data-mode="dark"]) main .to-emerald-800,
+html:not([data-mode="dark"]) main .to-purple-800,
+html:not([data-mode="dark"]) main .to-orange-800,
+html:not([data-mode="dark"]) main .to-teal-800,
+html:not([data-mode="dark"]) main .to-red-800,
+html:not([data-mode="dark"]) main .to-rose-800,
+html:not([data-mode="dark"]) main .to-green-800,
+html:not([data-mode="dark"]) main .to-yellow-800 {
+  --tw-gradient-to: var(--bg-sub) var(--tw-gradient-to-position) !important;
+}
+
+html:not([data-mode="dark"]) main input,
+html:not([data-mode="dark"]) main select,
+html:not([data-mode="dark"]) main textarea {
+  background: var(--card) !important;
+  color: var(--t1) !important;
+  border-color: var(--card-border) !important;
+}
+
+html:not([data-mode="dark"]) main option {
+  background: var(--card);
+  color: var(--t1);
+}
+
+html:not([data-mode="dark"]) main .bg-indigo-600.text-white,
+html:not([data-mode="dark"]) main .bg-indigo-500.text-white,
+html:not([data-mode="dark"]) main .bg-purple-600.text-white,
+html:not([data-mode="dark"]) main .bg-purple-500.text-white,
+html:not([data-mode="dark"]) main .bg-blue-600.text-white,
+html:not([data-mode="dark"]) main .bg-blue-500.text-white,
+html:not([data-mode="dark"]) main .bg-emerald-600.text-white,
+html:not([data-mode="dark"]) main .bg-emerald-500.text-white,
+html:not([data-mode="dark"]) main .bg-red-600.text-white,
+html:not([data-mode="dark"]) main .bg-red-500.text-white,
+html:not([data-mode="dark"]) main .bg-orange-600.text-white,
+html:not([data-mode="dark"]) main .bg-orange-500.text-white,
+html:not([data-mode="dark"]) main button[style*="var(--ac-fg)"] {
+  color: #fff !important;
+}
+
+html:not([data-mode="dark"]) main .shadow-indigo-100,
+html:not([data-mode="dark"]) main .shadow-purple-200,
+html:not([data-mode="dark"]) main .shadow-indigo-200,
+html:not([data-mode="dark"]) main .shadow-emerald-200 {
+  box-shadow: var(--card-shadow) !important;
+}
+
+/* ══════════════════════════════════════════════
+   CARD SYSTEM
+══════════════════════════════════════════════ */
+@layer components {
+  /* Primary card — used throughout the app */
+  .gc, .card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    box-shadow: var(--card-shadow);
+    transition: box-shadow 0.2s, background 0.3s;
+    color: var(--t1);
+  }
+  .gc:hover, .card:hover { box-shadow: var(--card-shadow-h); }
+
+  /* Heavy glass (dark mode only, fallback to card in light) */
+  .gc-heavy {
+    background: var(--bg-sub);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    box-shadow: var(--card-shadow);
+    color: var(--t1);
+  }
+
+  /* Sidebar icon */
+  .sb-ic {
+    width: 42px; height: 42px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.15s; position: relative;
+    color: var(--t3);
+  }
+  .sb-ic:hover { background: var(--bg-sub); color: var(--t2); }
+  .sb-ic.active { background: var(--bg-sub); color: var(--t1); }
+  /* Active dot indicator (Linear/Sarvam style) */
+  .sb-ic.active::after {
+    content: ''; position: absolute; right: 4px; top: 50%; transform: translateY(-50%);
+    width: 3px; height: 3px; border-radius: 50%; background: var(--t1);
+  }
+
+  /* Tooltip */
+  .sb-tooltip {
+    position: absolute; left: 54px; top: 50%; transform: translateY(-50%);
+    background: var(--t1); color: var(--bg);
+    font-size: 11px; font-weight: 500; padding: 4px 10px; border-radius: 7px;
+    white-space: nowrap; opacity: 0; pointer-events: none;
+    transition: opacity 0.12s; z-index: 999;
+  }
+  .sb-ic:hover .sb-tooltip { opacity: 1; }
+}
+
+/* ══════════════════════════════════════════════
+   UTILITIES
+══════════════════════════════════════════════ */
+@layer utilities {
+  .font-serif { font-family: var(--font-serif); }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  .fade-in { animation: fadeIn 0.28s ease; }
+  .text-glow { text-shadow: 0 0 16px currentColor; }
+}
+
+/* ══════════════════════════════════════════════
+   KEYFRAMES
+══════════════════════════════════════════════ */
+@keyframes fadeIn    { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+@keyframes riseIn    { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+@keyframes spin      { to { transform: rotate(360deg); } }
+@keyframes shimmer   { 0% { background-position:0% center; } 100% { background-position:200% center; } }
+@keyframes blink     { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+@keyframes pulse-bar { 0% { transform:scaleY(0.3); } 100% { transform:scaleY(1.5); } }

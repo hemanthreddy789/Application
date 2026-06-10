@@ -165,14 +165,20 @@ model TimeLog {
 }
 
 model Leave {
-  id         String   @id @default(uuid())
-  employeeId String
-  startDate  DateTime
-  endDate    DateTime
-  leaveType  String   // Vacation, Sick, Personal
-  status     String   // Approved, Pending
+  id             String   @id @default(uuid())
+  employeeId     String
+  startDate      DateTime
+  endDate        DateTime
+  leaveType      String   // Vacation, Sick, Personal, Emergency, Maternity, Paternity, Compensatory
+  status         String   // Approved, Pending, Rejected
+  reason         String?
+  approvedBy     String?
+  halfDay        Boolean  @default(false)
+  emergencyLeave Boolean  @default(false)
+  impactLevel    String   @default("Low") // Low, Medium, High, Critical
+  createdAt      DateTime @default(now())
 
-  employee   Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  employee       Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
 }
 
 model Holiday {

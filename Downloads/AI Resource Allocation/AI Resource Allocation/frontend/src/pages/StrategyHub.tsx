@@ -189,16 +189,16 @@ export default function StrategyHub() {
       {/* Page Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-white flex items-center gap-2">
             <Brain className="text-indigo-600 w-7 h-7" /> Enterprise Strategy & Planning Hub
           </h1>
-          <p className="text-sm text-gray-500 mt-0.5">
+          <p className="text-sm text-slate-400 mt-0.5">
             Conduct dynamic What-If simulations, monitor AI fairness audits, and administer real-time external syncing.
           </p>
         </div>
 
         {/* Tab Selection */}
-        <div className="flex bg-gray-100 p-1 rounded-xl w-fit">
+        <div className="flex bg-white/[0.06] p-1 rounded-xl w-fit">
           {[
             { id: 'whatif', label: '⚖️ What-If Simulator' },
             { id: 'compliance', label: '🛡️ Compliance & Wellness' },
@@ -209,8 +209,8 @@ export default function StrategyHub() {
               onClick={() => setActiveTab(tab.id as any)}
               className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${
                 activeTab === tab.id 
-                  ? 'bg-white text-indigo-600 shadow-sm border border-gray-100' 
-                  : 'text-gray-500 hover:text-gray-800'
+                  ? 'bg-white text-indigo-600 shadow-sm border border-white/[0.06]' 
+                  : 'text-slate-400 hover:text-gray-800'
               }`}
             >
               {tab.label}
@@ -225,16 +225,16 @@ export default function StrategyHub() {
       {activeTab === 'whatif' && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           {/* Controls Panel */}
-          <div className="lg:col-span-4 bg-white border border-gray-200 shadow-sm rounded-2xl overflow-hidden">
-            <div className="p-5 border-b border-gray-100 bg-slate-50/50">
-              <h2 className="font-bold text-slate-800">Select Simulation Scenario</h2>
-              <p className="text-xs text-gray-400 mt-0.5">Configure operational hypothesis parameters</p>
+          <div className="lg:col-span-4 border border-white/10 shadow-sm rounded-2xl overflow-hidden">
+            <div className="p-5 border-b border-white/[0.06] bg-slate-50/50">
+              <h2 className="font-bold text-white">Select Simulation Scenario</h2>
+              <p className="text-xs text-slate-500 mt-0.5">Configure operational hypothesis parameters</p>
             </div>
 
             <div className="p-5 space-y-5">
               {/* Scenario Type Selection */}
               <div>
-                <label className="text-[10px] font-black uppercase text-gray-400 tracking-widest block mb-2">Scenario Hypothesis</label>
+                <label className="text-[10px] font-black uppercase text-slate-500 tracking-widest block mb-2">Scenario Hypothesis</label>
                 <div className="grid grid-cols-1 gap-2">
                   {[
                     { id: 'WIN_PROJECT', title: '🏆 Win Dynamic Project', desc: 'Add new tasks and model allocation and budgets' },
@@ -247,23 +247,23 @@ export default function StrategyHub() {
                       className={`text-left p-3 rounded-xl border transition-all ${
                         scenarioType === sc.id
                           ? 'border-indigo-500 bg-indigo-50/40 text-indigo-950 font-bold'
-                          : 'border-gray-200 hover:bg-slate-50'
+                          : 'border-white/10 hover:bg-slate-50'
                       }`}
                     >
-                      <p className="text-xs leading-none font-bold text-slate-800">{sc.title}</p>
-                      <p className="text-[10px] text-gray-500 mt-1 leading-tight font-medium">{sc.desc}</p>
+                      <p className="text-xs leading-none font-bold text-white">{sc.title}</p>
+                      <p className="text-[10px] text-slate-400 mt-1 leading-tight font-medium">{sc.desc}</p>
                     </button>
                   ))}
                 </div>
               </div>
 
               {/* Dynamic Param Inputs */}
-              <div className="border-t border-gray-100 pt-4 space-y-4">
+              <div className="border-t border-white/[0.06] pt-4 space-y-4">
                 {scenarioType === 'BOB_QUITS' && (
                   <div>
-                    <label className="text-[10px] font-black uppercase text-gray-400 tracking-widest block mb-1.5"> Departing Employee </label>
+                    <label className="text-[10px] font-black uppercase text-slate-500 tracking-widest block mb-1.5"> Departing Employee </label>
                     <select
-                      className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm bg-white font-medium text-slate-700 focus:outline-indigo-500"
+                      className="w-full border border-white/10 rounded-xl px-3 py-2 text-sm font-medium text-slate-700 focus:outline-indigo-500"
                       value={selectedEmployeeId}
                       onChange={e => setSelectedEmployeeId(e.target.value)}
                     >
@@ -277,10 +277,10 @@ export default function StrategyHub() {
                 {scenarioType === 'WIN_PROJECT' && (
                   <div className="space-y-3">
                     <div>
-                      <label className="text-[10px] font-black uppercase text-gray-400 tracking-widest block mb-1.5">Project Name</label>
+                      <label className="text-[10px] font-black uppercase text-slate-500 tracking-widest block mb-1.5">Project Name</label>
                       <input
                         type="text"
-                        className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-indigo-500"
+                        className="w-full border border-white/10 rounded-xl px-3 py-2 text-sm focus:outline-indigo-500"
                         value={projectName}
                         onChange={e => setProjectName(e.target.value)}
                         placeholder="Project Phoenix"
@@ -288,14 +288,14 @@ export default function StrategyHub() {
                     </div>
                     <div>
                       <div className="flex justify-between items-center mb-1">
-                        <label className="text-[10px] font-black uppercase text-gray-400 tracking-widest">Tasks to Allocate</label>
+                        <label className="text-[10px] font-black uppercase text-slate-500 tracking-widest">Tasks to Allocate</label>
                         <button onClick={addTask} className="text-indigo-600 hover:text-indigo-800 text-[10px] font-black flex items-center gap-1">
                           <Plus size={12} /> ADD TASK
                         </button>
                       </div>
                       <div className="space-y-2 max-h-56 overflow-auto pr-1">
                         {projectTasks.map((task, idx) => (
-                          <div key={idx} className="p-3 bg-slate-50 border border-gray-200 rounded-xl space-y-2 relative">
+                          <div key={idx} className="p-3 bg-slate-50 border border-white/10 rounded-xl space-y-2 relative">
                             <button onClick={() => removeTask(idx)} className="absolute top-2 right-2 text-red-500 hover:text-red-700">
                               <Trash2 size={12} />
                             </button>
@@ -303,26 +303,26 @@ export default function StrategyHub() {
                               type="text"
                               value={task.title}
                               onChange={e => updateTaskField(idx, 'title', e.target.value)}
-                              className="bg-transparent border-b border-gray-200 w-4/5 text-xs font-semibold focus:outline-none focus:border-indigo-500 pb-0.5"
+                              className="bg-transparent border-b border-white/10 w-4/5 text-xs font-semibold focus:outline-none focus:border-indigo-500 pb-0.5"
                               placeholder="Task Title"
                             />
                             <div className="grid grid-cols-2 gap-2">
                               <div>
-                                <label className="text-[8px] font-black text-gray-400 uppercase">Estimated Hours</label>
+                                <label className="text-[8px] font-black text-slate-500 uppercase">Estimated Hours</label>
                                 <input
                                   type="number"
                                   value={task.estimatedHours}
                                   onChange={e => updateTaskField(idx, 'estimatedHours', parseInt(e.target.value) || 0)}
-                                  className="w-full border border-gray-200 bg-white rounded-lg px-2 py-0.5 text-xs focus:outline-none"
+                                  className="w-full border border-white/10 rounded-lg px-2 py-0.5 text-xs focus:outline-none"
                                 />
                               </div>
                               <div>
-                                <label className="text-[8px] font-black text-gray-400 uppercase">Required Skills (CSV)</label>
+                                <label className="text-[8px] font-black text-slate-500 uppercase">Required Skills (CSV)</label>
                                 <input
                                   type="text"
                                   value={task.requiredSkills}
                                   onChange={e => updateTaskField(idx, 'requiredSkills', e.target.value)}
-                                  className="w-full border border-gray-200 bg-white rounded-lg px-2 py-0.5 text-xs focus:outline-none"
+                                  className="w-full border border-white/10 rounded-lg px-2 py-0.5 text-xs focus:outline-none"
                                   placeholder="React, SQL"
                                 />
                               </div>
@@ -337,53 +337,53 @@ export default function StrategyHub() {
                 {scenarioType === 'HIRE_CONTRACTORS' && (
                   <div className="space-y-3">
                     <div className="flex justify-between items-center mb-1">
-                      <label className="text-[10px] font-black uppercase text-gray-400 tracking-widest">Injected Capacity</label>
+                      <label className="text-[10px] font-black uppercase text-slate-500 tracking-widest">Injected Capacity</label>
                       <button onClick={addContractor} className="text-indigo-600 hover:text-indigo-800 text-[10px] font-black flex items-center gap-1">
                         <Plus size={12} /> ADD CONTRACTOR
                       </button>
                     </div>
                     <div className="space-y-2 max-h-56 overflow-auto pr-1">
                       {contractors.map((con, idx) => (
-                        <div key={idx} className="p-3 bg-slate-50 border border-gray-200 rounded-xl space-y-2 relative">
+                        <div key={idx} className="p-3 bg-slate-50 border border-white/10 rounded-xl space-y-2 relative">
                           <button onClick={() => removeContractor(idx)} className="absolute top-2 right-2 text-red-500 hover:text-red-700">
                             <Trash2 size={12} />
                           </button>
                           <div className="grid grid-cols-2 gap-2">
                             <div>
-                              <label className="text-[8px] font-black text-gray-400 uppercase">Skill Specialty</label>
+                              <label className="text-[8px] font-black text-slate-500 uppercase">Skill Specialty</label>
                               <input
                                 type="text"
                                 value={con.skillName}
                                 onChange={e => updateContractorField(idx, 'skillName', e.target.value)}
-                                className="w-full border border-gray-200 bg-white rounded-lg px-2 py-0.5 text-xs focus:outline-none"
+                                className="w-full border border-white/10 rounded-lg px-2 py-0.5 text-xs focus:outline-none"
                                 placeholder="React"
                               />
                             </div>
                             <div>
-                              <label className="text-[8px] font-black text-gray-400 uppercase">Hourly Rate ($)</label>
+                              <label className="text-[8px] font-black text-slate-500 uppercase">Hourly Rate ($)</label>
                               <input
                                 type="number"
                                 value={con.hourlyRate}
                                 onChange={e => updateContractorField(idx, 'hourlyRate', parseInt(e.target.value) || 0)}
-                                className="w-full border border-gray-200 bg-white rounded-lg px-2 py-0.5 text-xs focus:outline-none"
+                                className="w-full border border-white/10 rounded-lg px-2 py-0.5 text-xs focus:outline-none"
                               />
                             </div>
                             <div>
-                              <label className="text-[8px] font-black text-gray-400 uppercase">Count</label>
+                              <label className="text-[8px] font-black text-slate-500 uppercase">Count</label>
                               <input
                                 type="number"
                                 value={con.count}
                                 onChange={e => updateContractorField(idx, 'count', parseInt(e.target.value) || 0)}
-                                className="w-full border border-gray-200 bg-white rounded-lg px-2 py-0.5 text-xs focus:outline-none"
+                                className="w-full border border-white/10 rounded-lg px-2 py-0.5 text-xs focus:outline-none"
                               />
                             </div>
                             <div>
-                              <label className="text-[8px] font-black text-gray-400 uppercase">Weekly Hours</label>
+                              <label className="text-[8px] font-black text-slate-500 uppercase">Weekly Hours</label>
                               <input
                                 type="number"
                                 value={con.weeklyHours}
                                 onChange={e => updateContractorField(idx, 'weeklyHours', parseInt(e.target.value) || 0)}
-                                className="w-full border border-gray-200 bg-white rounded-lg px-2 py-0.5 text-xs focus:outline-none"
+                                className="w-full border border-white/10 rounded-lg px-2 py-0.5 text-xs focus:outline-none"
                               />
                             </div>
                           </div>
@@ -425,22 +425,22 @@ export default function StrategyHub() {
             )}
 
             {!simulationResult && !simulating && !simError && (
-              <div className="bg-white border border-gray-200 rounded-2xl p-12 text-center shadow-sm">
+              <div className="bg-white border border-white/10 rounded-2xl p-12 text-center shadow-sm">
                 <div className="w-16 h-16 bg-slate-50 text-indigo-500 rounded-full flex items-center justify-center mx-auto mb-4 border border-indigo-50">
                   <Brain size={28} />
                 </div>
-                <h3 className="font-bold text-slate-800 text-lg">No Active Simulation</h3>
-                <p className="text-gray-400 text-sm max-w-sm mx-auto mt-1 leading-relaxed">
+                <h3 className="font-bold text-white text-lg">No Active Simulation</h3>
+                <p className="text-slate-500 text-sm max-w-sm mx-auto mt-1 leading-relaxed">
                   Select a hypothesis on the left control panel, configure parameters, and click run to calculate workforce impacts.
                 </p>
               </div>
             )}
 
             {simulating && (
-              <div className="bg-white border border-gray-200 rounded-2xl p-12 text-center shadow-sm animate-pulse">
+              <div className="bg-white border border-white/10 rounded-2xl p-12 text-center shadow-sm animate-pulse">
                 <div className="w-12 h-12 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-                <h3 className="font-bold text-slate-800 text-base">Running Machine Learning Simulation</h3>
-                <p className="text-gray-400 text-xs mt-1">Re-solving resource mapping indexes, traversing leave arrays, and calculating cost variances...</p>
+                <h3 className="font-bold text-white text-base">Running Machine Learning Simulation</h3>
+                <p className="text-slate-500 text-xs mt-1">Re-solving resource mapping indexes, traversing leave arrays, and calculating cost variances...</p>
               </div>
             )}
 
@@ -462,28 +462,28 @@ export default function StrategyHub() {
                 {/* Grid stats */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Utilization comparison chart */}
-                  <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
-                    <h3 className="font-bold text-slate-800 text-sm mb-4">Utilization Shift Impact</h3>
+                  <div className="bg-white border border-white/10 rounded-2xl p-5 shadow-sm">
+                    <h3 className="font-bold text-white text-sm mb-4">Utilization Shift Impact</h3>
                     <div className="flex items-center justify-around h-36">
                       <div className="text-center">
-                        <p className="text-xs text-gray-400 font-bold uppercase">Before</p>
+                        <p className="text-xs text-slate-500 font-bold uppercase">Before</p>
                         <p className="text-4xl font-extrabold text-slate-700 mt-1">{simulationResult.workloadDiff.currentAvgUtilization}</p>
-                        <p className="text-[10px] text-gray-400 font-medium mt-0.5">Team Avg</p>
+                        <p className="text-[10px] text-slate-500 font-medium mt-0.5">Team Avg</p>
                       </div>
                       <ArrowRight size={24} className="text-slate-300 animate-pulse" />
                       <div className="text-center">
-                        <p className="text-xs text-gray-400 font-bold uppercase">Simulated</p>
+                        <p className="text-xs text-slate-500 font-bold uppercase">Simulated</p>
                         <p className={`text-4xl font-extrabold mt-1 ${
                           parseInt(simulationResult.workloadDiff.scenarioAvgUtilization) > 95 ? 'text-red-500' : 'text-indigo-600'
                         }`}>{simulationResult.workloadDiff.scenarioAvgUtilization}</p>
-                        <p className="text-[10px] text-gray-400 font-medium mt-0.5">Team Avg</p>
+                        <p className="text-[10px] text-slate-500 font-medium mt-0.5">Team Avg</p>
                       </div>
                     </div>
                   </div>
 
                   {/* Bottleneck Risks card */}
-                  <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
-                    <h3 className="font-bold text-slate-800 text-sm mb-3">Capacity Constraints & Warnings</h3>
+                  <div className="bg-white border border-white/10 rounded-2xl p-5 shadow-sm">
+                    <h3 className="font-bold text-white text-sm mb-3">Capacity Constraints & Warnings</h3>
                     
                     {/* Departures Bottlenecks */}
                     {scenarioType === 'BOB_QUITS' && (
@@ -541,7 +541,7 @@ export default function StrategyHub() {
                           <span className="text-emerald-700 font-semibold">Weekly contractor cost</span>
                           <span className="font-black text-emerald-950">${simulationResult.weeklyCost.toLocaleString()}</span>
                         </div>
-                        <div className="p-3 bg-slate-50 border border-gray-100 rounded-lg text-xs leading-relaxed text-slate-600">
+                        <div className="p-3 bg-slate-50 border border-white/[0.06] rounded-lg text-xs leading-relaxed text-slate-600">
                           🎯 Contractors resolved and offloaded <span className="font-bold text-indigo-600">{simulationResult.totalOffloadedHours}h</span> of active bottleneck engineering hours from core staff.
                         </div>
                       </div>
@@ -550,16 +550,16 @@ export default function StrategyHub() {
                 </div>
 
                 {/* Details Table */}
-                <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
-                  <div className="p-4 border-b border-gray-100 bg-slate-50/50 flex justify-between items-center">
-                    <h3 className="font-bold text-slate-800 text-sm">Simulated Task Mapping Details</h3>
+                <div className="bg-white border border-white/10 rounded-2xl shadow-sm overflow-hidden">
+                  <div className="p-4 border-b border-white/[0.06] bg-slate-50/50 flex justify-between items-center">
+                    <h3 className="font-bold text-white text-sm">Simulated Task Mapping Details</h3>
                     <span className="text-[10px] font-black uppercase bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full">Allocation Report</span>
                   </div>
 
                   {/* CASE A: Win Project Assignments */}
                   {scenarioType === 'WIN_PROJECT' && (
                     <table className="w-full text-left">
-                      <thead className="bg-white text-[9px] uppercase tracking-widest text-gray-400 border-b border-gray-100 font-black">
+                      <thead className="bg-white text-[9px] uppercase tracking-widest text-slate-500 border-b border-white/[0.06] font-black">
                         <tr>
                           <th className="p-3 font-bold">Hypothetical Task</th>
                           <th className="p-3 font-bold">Estimated Load</th>
@@ -570,13 +570,13 @@ export default function StrategyHub() {
                       <tbody className="divide-y divide-gray-50 text-xs">
                         {simulationResult.assignments.map((as: any, i: number) => (
                           <tr key={i} className="hover:bg-slate-50/50">
-                            <td className="p-3 font-semibold text-slate-800">{as.taskTitle}</td>
+                            <td className="p-3 font-semibold text-white">{as.taskTitle}</td>
                             <td className="p-3 font-medium text-slate-600">{as.estimatedHours}h</td>
                             <td className="p-3">
                               <span className={`font-bold ${as.assignedTo.includes('Unassigned') ? 'text-red-500' : 'text-indigo-600'}`}>
                                 👤 {as.assignedTo}
                               </span>
-                              <span className="text-gray-400 text-[10px] font-medium ml-1">({as.role})</span>
+                              <span className="text-slate-500 text-[10px] font-medium ml-1">({as.role})</span>
                             </td>
                             <td className="p-3 text-right font-bold text-slate-700">${as.simulatedCost}</td>
                           </tr>
@@ -588,7 +588,7 @@ export default function StrategyHub() {
                   {/* CASE B: Key Employee Departure Orphaned Tasks */}
                   {scenarioType === 'BOB_QUITS' && (
                     <table className="w-full text-left">
-                      <thead className="bg-white text-[9px] uppercase tracking-widest text-gray-400 border-b border-gray-100 font-black">
+                      <thead className="bg-white text-[9px] uppercase tracking-widest text-slate-500 border-b border-white/[0.06] font-black">
                         <tr>
                           <th className="p-3 font-bold">Orphaned Task</th>
                           <th className="p-3 font-bold">Load</th>
@@ -600,7 +600,7 @@ export default function StrategyHub() {
                       <tbody className="divide-y divide-gray-50 text-xs">
                         {simulationResult.orphanedTasks.map((task: any, i: number) => (
                           <tr key={i} className="hover:bg-slate-50/50">
-                            <td className="p-3 font-semibold text-slate-800">{task.taskTitle}</td>
+                            <td className="p-3 font-semibold text-white">{task.taskTitle}</td>
                             <td className="p-3 font-medium text-slate-600">{task.estimatedHours}h</td>
                             <td className="p-3 font-bold text-indigo-600">👤 {task.recommendedReplacementName}</td>
                             <td className="p-3">
@@ -610,14 +610,14 @@ export default function StrategyHub() {
                                 {task.matchScore}%
                               </span>
                             </td>
-                            <td className="p-3 text-right text-gray-500 italic max-w-xs truncate leading-normal" title={task.reason}>
+                            <td className="p-3 text-right text-slate-400 italic max-w-xs truncate leading-normal" title={task.reason}>
                               {task.reason}
                             </td>
                           </tr>
                         ))}
                         {simulationResult.orphanedTasks.length === 0 && (
                           <tr>
-                            <td colSpan={5} className="p-6 text-center text-gray-400 italic">No pending tasks to reassign.</td>
+                            <td colSpan={5} className="p-6 text-center text-slate-500 italic">No pending tasks to reassign.</td>
                           </tr>
                         )}
                       </tbody>
@@ -627,7 +627,7 @@ export default function StrategyHub() {
                   {/* CASE C: Inject Contractor Capacity offloading */}
                   {scenarioType === 'HIRE_CONTRACTORS' && (
                     <table className="w-full text-left">
-                      <thead className="bg-white text-[9px] uppercase tracking-widest text-gray-400 border-b border-gray-100 font-black">
+                      <thead className="bg-white text-[9px] uppercase tracking-widest text-slate-500 border-b border-white/[0.06] font-black">
                         <tr>
                           <th className="p-3 font-bold">Offloaded Task</th>
                           <th className="p-3 font-bold">Estimated Hours</th>
@@ -638,7 +638,7 @@ export default function StrategyHub() {
                       <tbody className="divide-y divide-gray-50 text-xs">
                         {simulationResult.offloadedTasks.map((task: any, i: number) => (
                           <tr key={i} className="hover:bg-slate-50/50">
-                            <td className="p-3 font-semibold text-slate-800">{task.taskTitle}</td>
+                            <td className="p-3 font-semibold text-white">{task.taskTitle}</td>
                             <td className="p-3 font-medium text-slate-600">{task.estimatedHours}h</td>
                             <td className="p-3 font-bold text-red-600">👤 {task.offloadedFrom} (Overloaded)</td>
                             <td className="p-3 text-right font-black text-indigo-600 uppercase tracking-wider text-[10px]">
@@ -648,7 +648,7 @@ export default function StrategyHub() {
                         ))}
                         {simulationResult.offloadedTasks.length === 0 && (
                           <tr>
-                            <td colSpan={4} className="p-6 text-center text-gray-400 italic">
+                            <td colSpan={4} className="p-6 text-center text-slate-500 italic">
                               No tasks matched contractor specialties for offloading overloaded personnel.
                             </td>
                           </tr>
@@ -669,18 +669,18 @@ export default function StrategyHub() {
       {activeTab === 'compliance' && (
         <div className="space-y-6">
           {loadingReports ? (
-            <div className="bg-white border border-gray-200 rounded-2xl p-12 text-center shadow-sm">
+            <div className="bg-white border border-white/10 rounded-2xl p-12 text-center shadow-sm">
               <RefreshCw className="animate-spin w-8 h-8 text-indigo-500 mx-auto mb-3" />
-              <p className="text-gray-500 text-sm font-medium">Fetching active fairness audits and fatigue scores...</p>
+              <p className="text-slate-400 text-sm font-medium">Fetching active fairness audits and fatigue scores...</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
               {/* Left Column: Burnout Risks */}
-              <div className="lg:col-span-7 bg-white border border-gray-200 shadow-sm rounded-2xl overflow-hidden">
-                <div className="p-5 border-b border-gray-100 bg-slate-50/50 flex justify-between items-center">
+              <div className="lg:col-span-7 border border-white/10 shadow-sm rounded-2xl overflow-hidden">
+                <div className="p-5 border-b border-white/[0.06] bg-slate-50/50 flex justify-between items-center">
                   <div>
-                    <h2 className="font-bold text-slate-800">Fatigue & Burnout Risk Audit</h2>
-                    <p className="text-xs text-gray-400 mt-0.5">Calculated by weekly loads, meeting density, and recovery buffers</p>
+                    <h2 className="font-bold text-white">Fatigue & Burnout Risk Audit</h2>
+                    <p className="text-xs text-slate-500 mt-0.5">Calculated by weekly loads, meeting density, and recovery buffers</p>
                   </div>
                   <span className="text-[10px] font-black bg-rose-100 text-rose-700 px-2.5 py-1 rounded-full uppercase">Health Monitor</span>
                 </div>
@@ -694,7 +694,7 @@ export default function StrategyHub() {
                             {emp.name.charAt(0)}
                           </div>
                           <div>
-                            <h4 className="font-bold text-slate-800 text-sm">{emp.name}</h4>
+                            <h4 className="font-bold text-white text-sm">{emp.name}</h4>
                             <div className="flex items-center gap-2 mt-0.5 text-xs text-slate-500 font-medium">
                               <span className="text-rose-600 font-bold uppercase tracking-wider text-[10px] bg-rose-100 px-1.5 py-0.5 rounded">High Burnout Risk</span>
                               <span>Score: {emp.compositeBurnoutScore}/100</span>
@@ -703,11 +703,11 @@ export default function StrategyHub() {
                         </div>
 
                         {/* Audit Details */}
-                        <div className="mt-3 grid grid-cols-2 gap-2 text-[11px] font-medium text-slate-600 bg-white border border-rose-50 p-2 rounded-lg">
-                          <div>⏳ Weeks over 90%: <span className="font-bold text-slate-800">{emp.factors.consecutiveWeeksOver90Pct}w</span></div>
-                          <div>🏖️ PTO taken last 6mo: <span className="font-bold text-slate-800">{emp.factors.ptoTakenLast6MonthsDays} days</span></div>
-                          <div>📅 Projects shared: <span className="font-bold text-slate-800">{emp.factors.concurrentProjectsCount}</span></div>
-                          <div>🎯 Missed delivery freq: <span className="font-bold text-slate-800">{emp.factors.lateDeliveryFrequencyPct}%</span></div>
+                        <div className="mt-3 grid grid-cols-2 gap-2 text-[11px] font-medium text-slate-600 border border-rose-50 p-2 rounded-lg">
+                          <div>⏳ Weeks over 90%: <span className="font-bold text-white">{emp.factors.consecutiveWeeksOver90Pct}w</span></div>
+                          <div>🏖️ PTO taken last 6mo: <span className="font-bold text-white">{emp.factors.ptoTakenLast6MonthsDays} days</span></div>
+                          <div>📅 Projects shared: <span className="font-bold text-white">{emp.factors.concurrentProjectsCount}</span></div>
+                          <div>🎯 Missed delivery freq: <span className="font-bold text-white">{emp.factors.lateDeliveryFrequencyPct}%</span></div>
                         </div>
                       </div>
 
@@ -715,7 +715,7 @@ export default function StrategyHub() {
                       <div className="md:w-56 space-y-2">
                         <p className="text-[9px] font-bold text-rose-400 uppercase tracking-widest leading-none">Mandated Manager Actions</p>
                         {emp.recommendedInterventions.map((act: string, idx: number) => (
-                          <div key={idx} className="text-xs bg-white text-rose-950 p-2 rounded-lg border border-rose-100 font-semibold shadow-inner leading-normal flex items-start gap-1">
+                          <div key={idx} className="text-xs text-rose-950 p-2 rounded-lg border border-rose-100 font-semibold shadow-inner leading-normal flex items-start gap-1">
                             <span>✨</span> {act}
                           </div>
                         ))}
@@ -724,25 +724,25 @@ export default function StrategyHub() {
                   ))}
 
                   {burnoutData?.highRiskEmployees?.length === 0 && (
-                    <div className="text-center py-12 text-gray-400 italic">
+                    <div className="text-center py-12 text-slate-500 italic">
                       <p className="text-3xl mb-1">🎉</p>
                       <p className="text-xs">No active staff flags high fatigue ratios this cycle.</p>
                     </div>
                   )}
 
-                  <div className="bg-slate-50 p-3 rounded-xl border border-gray-100 text-xs font-semibold text-slate-500 flex justify-between items-center mt-4">
+                  <div className="bg-slate-50 p-3 rounded-xl border border-white/[0.06] text-xs font-semibold text-slate-500 flex justify-between items-center mt-4">
                     <span>Average Composite Organization Fatigue Index:</span>
-                    <span className="text-slate-800 font-bold bg-white px-2 py-0.5 border rounded-lg">{burnoutData?.systemAverageBurnoutScore || 42}/100</span>
+                    <span className="text-white font-bold px-2 py-0.5 border rounded-lg">{burnoutData?.systemAverageBurnoutScore || 42}/100</span>
                   </div>
                 </div>
               </div>
 
               {/* Right Column: AI Compliance & Bias */}
-              <div className="lg:col-span-5 bg-white border border-gray-200 shadow-sm rounded-2xl overflow-hidden">
-                <div className="p-5 border-b border-gray-100 bg-slate-50/50 flex justify-between items-center">
+              <div className="lg:col-span-5 border border-white/10 shadow-sm rounded-2xl overflow-hidden">
+                <div className="p-5 border-b border-white/[0.06] bg-slate-50/50 flex justify-between items-center">
                   <div>
-                    <h2 className="font-bold text-slate-800">AI Fairness & Parity Audit</h2>
-                    <p className="text-xs text-gray-400 mt-0.5">Demographic Disparate Impact Ratios (perfect target = 1.0)</p>
+                    <h2 className="font-bold text-white">AI Fairness & Parity Audit</h2>
+                    <p className="text-xs text-slate-500 mt-0.5">Demographic Disparate Impact Ratios (perfect target = 1.0)</p>
                   </div>
                   <ShieldCheck size={24} className="text-emerald-500 animate-pulse" />
                 </div>
@@ -762,7 +762,7 @@ export default function StrategyHub() {
                               <span>{m.label}</span>
                               <span style={{ color: m.color }}>{m.val}</span>
                             </div>
-                            <div className="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
+                            <div className="w-full h-2.5 bg-white/[0.06] rounded-full overflow-hidden">
                               <div 
                                 className="h-full rounded-full transition-all duration-1000" 
                                 style={{ 
@@ -776,22 +776,22 @@ export default function StrategyHub() {
                       </div>
 
                       {/* under recommended candidates & override anomalies */}
-                      <div className="space-y-3 pt-4 border-t border-gray-100">
+                      <div className="space-y-3 pt-4 border-t border-white/[0.06]">
                         <div>
-                          <p className="text-[10px] font-black uppercase text-gray-400 tracking-widest block mb-2">Under-Recommended Personnel Flag</p>
+                          <p className="text-[10px] font-black uppercase text-slate-500 tracking-widest block mb-2">Under-Recommended Personnel Flag</p>
                           {biasData.fairnessMetrics.underRecommendedCandidates.map((cand: any, idx: number) => (
                             <div key={idx} className="p-3 bg-orange-50/50 border border-orange-100 text-xs rounded-xl">
-                              <p className="font-bold text-slate-800">👤 {cand.name} <span className="font-medium text-gray-400">(Skill Match: {cand.skillMatchAvg})</span></p>
+                              <p className="font-bold text-white">👤 {cand.name} <span className="font-medium text-slate-500">(Skill Match: {cand.skillMatchAvg})</span></p>
                               <p className="text-orange-700 font-semibold mt-1">⚠️ Recommendation Rate: {cand.recommendationRate} — {cand.reason}</p>
                             </div>
                           ))}
                         </div>
 
                         <div>
-                          <p className="text-[10px] font-black uppercase text-gray-400 tracking-widest block mb-2">Override Pattern Anomalies</p>
+                          <p className="text-[10px] font-black uppercase text-slate-500 tracking-widest block mb-2">Override Pattern Anomalies</p>
                           {biasData.fairnessMetrics.overrideAnomalies.map((anom: any, idx: number) => (
                             <div key={idx} className="p-3 bg-red-50/40 border border-red-100 text-xs rounded-xl">
-                              <p className="font-bold text-slate-800">📊 {anom.group}</p>
+                              <p className="font-bold text-white">📊 {anom.group}</p>
                               <p className="text-red-700 font-semibold mt-1">🚨 Override Rate: {anom.overrideRate} (vs System Average: {anom.systemAvg})</p>
                             </div>
                           ))}
@@ -821,10 +821,10 @@ export default function StrategyHub() {
       {activeTab === 'integrations' && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start animate-in fade-in duration-500">
           {/* Plugin Roster */}
-          <div className="lg:col-span-8 bg-white border border-gray-200 shadow-sm rounded-2xl overflow-hidden">
-            <div className="p-5 border-b border-gray-100 bg-slate-50/50">
-              <h2 className="font-bold text-slate-800">Active Tooling Adapters</h2>
-              <p className="text-xs text-gray-400 mt-0.5">Integration hooks for continuous engineering sync pipelines</p>
+          <div className="lg:col-span-8 border border-white/10 shadow-sm rounded-2xl overflow-hidden">
+            <div className="p-5 border-b border-white/[0.06] bg-slate-50/50">
+              <h2 className="font-bold text-white">Active Tooling Adapters</h2>
+              <p className="text-xs text-slate-500 mt-0.5">Integration hooks for continuous engineering sync pipelines</p>
             </div>
 
             <div className="divide-y divide-gray-100 p-5 space-y-4">
@@ -866,14 +866,14 @@ export default function StrategyHub() {
                 const isSyncing = syncingPlugin === plugin.key;
                 
                 return (
-                  <div key={plugin.key} className="p-4 rounded-xl border border-gray-100 bg-white flex flex-col md:flex-row justify-between items-start md:items-center gap-4 hover:shadow-sm transition-all duration-300">
+                  <div key={plugin.key} className="p-4 rounded-xl border border-white/[0.06] flex flex-col md:flex-row justify-between items-start md:items-center gap-4 hover:shadow-sm transition-all duration-300">
                     <div className="flex gap-4 items-center">
                       <div className={`w-10 h-10 rounded-xl ${plugin.color} flex items-center justify-center font-bold shadow-inner shrink-0`}>
                         <plugin.icon size={20} />
                       </div>
                       <div>
-                        <h4 className="font-bold text-slate-800 text-sm leading-snug">{plugin.title}</h4>
-                        <p className="text-xs text-gray-500 mt-1 leading-normal max-w-md">{plugin.desc}</p>
+                        <h4 className="font-bold text-white text-sm leading-snug">{plugin.title}</h4>
+                        <p className="text-xs text-slate-400 mt-1 leading-normal max-w-md">{plugin.desc}</p>
                         <div className="flex items-center gap-2 mt-2">
                           <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-full ${
                             status.health === 'Healthy' ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'
@@ -929,9 +929,9 @@ export default function StrategyHub() {
             </div>
 
             {/* Document Exports Card */}
-            <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden p-5 space-y-4">
-              <h3 className="font-bold text-slate-800 text-sm">Strategic Reports Directory</h3>
-              <p className="text-xs text-gray-400 mt-1 leading-normal">
+            <div className="bg-white border border-white/10 rounded-2xl shadow-sm overflow-hidden p-5 space-y-4">
+              <h3 className="font-bold text-white text-sm">Strategic Reports Directory</h3>
+              <p className="text-xs text-slate-500 mt-1 leading-normal">
                 Download structured compliance metrics or invoice estimates generated by AI models.
               </p>
               
@@ -939,24 +939,24 @@ export default function StrategyHub() {
                 <a
                   href="/api/advanced/export/executive-summary"
                   target="_blank"
-                  className="w-full text-left p-3 rounded-xl border border-gray-200 hover:bg-slate-50 flex items-center gap-3 transition-all text-xs font-bold text-slate-800"
+                  className="w-full text-left p-3 rounded-xl border border-white/10 hover:bg-slate-50 flex items-center gap-3 transition-all text-xs font-bold text-white"
                 >
                   <FileText className="text-indigo-500 shrink-0" size={18} />
                   <div>
                     <p className="leading-none">Download Executive Roadmap Report</p>
-                    <p className="text-[9px] text-gray-400 mt-1 font-medium">Text payload • Snapshot metadata audit</p>
+                    <p className="text-[9px] text-slate-500 mt-1 font-medium">Text payload • Snapshot metadata audit</p>
                   </div>
                 </a>
 
                 <a
                   href="/api/advanced/export/billing"
                   target="_blank"
-                  className="w-full text-left p-3 rounded-xl border border-gray-200 hover:bg-slate-50 flex items-center gap-3 transition-all text-xs font-bold text-slate-800"
+                  className="w-full text-left p-3 rounded-xl border border-white/10 hover:bg-slate-50 flex items-center gap-3 transition-all text-xs font-bold text-white"
                 >
                   <DollarSign className="text-emerald-500 shrink-0" size={18} />
                   <div>
                     <p className="leading-none">Export Financial Staffing CSV</p>
-                    <p className="text-[9px] text-gray-400 mt-1 font-medium">Comma Separated Values • standard billing rates</p>
+                    <p className="text-[9px] text-slate-500 mt-1 font-medium">Comma Separated Values • standard billing rates</p>
                   </div>
                 </a>
               </div>
